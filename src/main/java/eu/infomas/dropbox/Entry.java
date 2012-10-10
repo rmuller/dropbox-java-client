@@ -36,6 +36,7 @@ import java.util.Date;
  * 
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
+ * @since infomas-asl 3.0.2
  */
 public final class Entry implements Serializable {
 
@@ -52,6 +53,7 @@ public final class Entry implements Serializable {
     private final String size;
     private final String mimeType;
     private final String rev;
+    private final long revision;
     private final boolean thumbExists;
     private final boolean isDeleted;
     private final List<Entry> contents;
@@ -60,7 +62,7 @@ public final class Entry implements Serializable {
      * Creates an entry from a map.
      * Only called by {@link Dropbox}.
      *
-     * @param map the map representation of the JSON received from the metadata call,
+     * @param jsonMap the map representation of the JSON received from the metadata call,
      * which should look like this:
      * <pre>
      * {
@@ -96,22 +98,23 @@ public final class Entry implements Serializable {
      * }
      * </pre>
      */
-    Entry(final Map<String, Object> map) {
-        bytes = asNumber(map, "bytes").longValue();
-        hash = asString(map, "hash");
-        icon = asString(map, "icon");
-        isDir = asBoolean(map, "is_dir");
-        modified = asDate(map, "modified");
-        clientMtime = asString(map, "client_mtime");
-        path = asString(map, "path");
-        root = asString(map, "root");
-        size = asString(map, "size");
-        mimeType = asString(map, "mime_type");
-        rev = asString(map, "rev");
-        thumbExists = asBoolean(map, "thumb_exists");
-        isDeleted = asBoolean(map, "is_deleted");
+    private Entry(final Map<String, Object> jsonMap) {
+        bytes = asNumber(jsonMap, "bytes").longValue();
+        hash = asString(jsonMap, "hash");
+        icon = asString(jsonMap, "icon");
+        isDir = asBoolean(jsonMap, "is_dir");
+        modified = asDate(jsonMap, "modified");
+        clientMtime = asString(jsonMap, "client_mtime");
+        path = asString(jsonMap, "path");
+        root = asString(jsonMap, "root");
+        size = asString(jsonMap, "size");
+        mimeType = asString(jsonMap, "mime_type");
+        rev = asString(jsonMap, "rev");
+        revision = asNumber(jsonMap, "revision").longValue();
+        thumbExists = asBoolean(jsonMap, "thumb_exists");
+        isDeleted = asBoolean(jsonMap, "is_deleted");
 
-        final List<Map> array = (List<Map>)map.get("contents");
+        final List<Map> array = (List<Map>)jsonMap.get("contents");
         if (array != null) {
             final List<Entry> tmp = new ArrayList<Entry>(array.size());
             for (final Map element : array) {
@@ -121,6 +124,10 @@ public final class Entry implements Serializable {
         } else {
             contents = Collections.emptyList();
         }
+    }
+    
+    static Entry valueOf(final Map<String, Object> jsonMap) {
+        return jsonMap == null ? null : new Entry(jsonMap);
     }
     
     /**
@@ -207,6 +214,13 @@ public final class Entry implements Serializable {
      */
     public String getRev() {
         return rev;
+    }
+
+    /**
+     * Return revision number.
+     */
+    public long getRevision() {
+        return revision;
     }
     
     /**

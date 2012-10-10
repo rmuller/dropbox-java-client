@@ -1,14 +1,12 @@
 /* SimpleRestClient.java
  * 
- ******************************************************************************
- *
  * Created: Oct 01, 2012
  * Character encoding: UTF-8
  * 
- * Copyright (c) 2012 - XIAM Solutions B.V. The Netherlands, http://www.xiam.nl
+ ********************************* LICENSE **********************************************
  * 
- ********************************* LICENSE ************************************
- *
+ * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,31 +31,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * {@code SimpleRestClient} is a basic implementation of the {@link RestClient}, based on
- * {@code java.net} so it can be used without problems in <a
+ * {@code SimpleRestClient} is a basic implementation of the {@link RestClient}
+ * interface, based on {@code java.net} so it can be used without problems with <a
  * href="https://developers.google.com/appengine/docs/java/urlfetch/usingjavanet">Google
  * App Engine</a>.
  *
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
- * @since dropbox-java-client 3.0.2
+ * @since infomas-asl 3.0.2
  */
 public final class SimpleRestClient extends RestClient {
     
     private static final Logger LOG = Logger.getLogger(SimpleRestClient.class.getName());
 
     @Override
-    public void toOutputStream(Request request, OutputStream responseStream) throws IOException {
+    public void toOutputStream(final Request request, final OutputStream responseStream) 
+        throws IOException {
+        
         final HttpURLConnection c  = execute(request);
         Utils.copyStream(c.getInputStream(), responseStream);
     }
     
     @Override
-    public String asString(Request request) throws IOException {
+    public String asString(final Request request) 
+        throws IOException {
+        
         final HttpURLConnection c  = execute(request);
         return Utils.toString(c.getInputStream(), c.getContentEncoding());
     }
 
-    private HttpURLConnection execute(final Request request) throws IOException {
+    private HttpURLConnection execute(final Request request) 
+        throws IOException {
         
         final long time = System.currentTimeMillis();
 
@@ -72,7 +75,7 @@ public final class SimpleRestClient extends RestClient {
             c.setDoOutput(true);
             Utils.copyStream(requestStream, c.getOutputStream());
         }
-        LOG.log(Level.FINE, "Request:\n    {0} {1}\n    headers: {2}\n    payload: {3}", 
+        LOG.log(Level.FINER, "Request:\n    {0} {1}\n    headers: {2}\n    payload: {3}", 
             new Object[]{request.getMethod(), url, request.getHeaders(), 
             requestStream != null});
         
@@ -84,7 +87,7 @@ public final class SimpleRestClient extends RestClient {
                 responseCode + ' ' +  c.getResponseMessage() + body);
         }
         
-        LOG.log(Level.INFO, "{0} executed in {1} ms.", 
+        LOG.log(Level.FINE, "{0} executed in {1} ms.", 
             new Object[] {request, System.currentTimeMillis() - time});
         return c;
     }

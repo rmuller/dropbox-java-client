@@ -26,6 +26,7 @@ package eu.infomas.dropbox;
  * 
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
+ * @since infomas-asl 3.0.2
  */
 public enum ThumbFormat {
 

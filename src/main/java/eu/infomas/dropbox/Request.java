@@ -1,14 +1,12 @@
 /* Request.java
- * 
- ******************************************************************************
  *
  * Created: Oct 01, 2012
  * Character encoding: UTF-8
  * 
- * Copyright (c) 2012 - XIAM Solutions B.V. The Netherlands, http://www.xiam.nl
+ ********************************* LICENSE **********************************************
  * 
- ********************************* LICENSE ************************************
- *
+ * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,12 +39,28 @@ import java.util.Collection;
 
 /**
  * {@code Request} holds all data for a HTTP(S) REST Request. A Builder is used for
- * creating new {@code Request} instances.
+ * creating new {@code Request} instances. The actual HTTP(S) Request is delegated 
+ * to a {@link RestClient} implementation.
+ * <br/>
+ * Note that this is a low-level API. In most uses cases you do not need this class
+ * (interfacing is done via {@link Dropbox} API.
+ * <br/>
+ * Example usage:
+ * <pre>
+ * // Write the Account information (as JSON String) to a file
+ * final RestClient restClient = RestClient.newInstance();
+ * final String response = Request.withMethod("GET")
+ *     .withHost("api.dropbox.com")
+ *     .withPath("/1/account/info")
+ *     .withHeader("Authorization", "OAuth v1 header value")
+ *     .withParameter("locale", "en")
+ *     .toFile(restClient, "file name");
+ * </pre>
  *
  * @see RestClient
  *
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
- * @since dropbox-java-client 3.0.2
+ * @since infomas-asl 3.0.2
  */
 public final class Request {
     
@@ -59,6 +73,13 @@ public final class Request {
     private final Map<String, String> parameters = new HashMap<String, String>();
     private final Map<String, String> headers = new HashMap<String, String>();
 
+    /**
+     * The builder for {@code Request} instances.
+     * To start building the request, use:
+     * <pre>
+     * Request.Builder builder = Request.withMethod("GET");
+     * </pre>
+     */
     public static final class Builder {
 
         private final Request request = new Request();
@@ -71,6 +92,8 @@ public final class Request {
         /**
          * Specify the scheme (protocol) of the request. This value is optional. If not
          * specified, {@code https} is assumed. {@link MalformedURLException}.
+         * <br/>
+         * Only "http" and "https" are allowed values.
          */
         public Builder withSchema(final String scheme) {
             assert "http".equals(scheme) || "https".equals(scheme);
@@ -149,24 +172,40 @@ public final class Request {
             return request.getUrl();
         }
 
-        public void toFile(final RestClient client, final String path) throws IOException {
-            toOutputStream(client, new FileOutputStream(path));
-        }
-        
-        public void toFile(final RestClient client, final File file) throws IOException {
-            toOutputStream(client, new FileOutputStream(file));
-        }
-        
-        public String asString(final RestClient client) throws IOException {
-            return client.asString(request);
-        }
- 
+        /**
+         * Execute the request, using the specified {@code RestClient} implementation
+         * and write the response to the specified output stream.
+         */  
         public void toOutputStream(final RestClient client, final OutputStream responseStream) 
             throws IOException {
             
             client.toOutputStream(request, responseStream);
         }
-    
+            
+        /**
+         * Execute the request, using the specified {@code RestClient} implementation
+         * and return the response as a String.
+         */        
+        public String asString(final RestClient client) throws IOException {
+            return client.asString(request);
+        }
+ 
+        /**
+         * Execute the request, using the specified {@code RestClient} implementation
+         * and write the response to the specified file.
+         */
+        public void toFile(final RestClient client, final String path) throws IOException {
+            toOutputStream(client, new FileOutputStream(path));
+        }
+        
+        /**
+         * Execute the request, using the specified {@code RestClient} implementation
+         * and write the response to the specified file.
+         */        
+        public void toFile(final RestClient client, final File file) throws IOException {
+            toOutputStream(client, new FileOutputStream(file));
+        }
+        
     }
 
     /**
@@ -191,7 +230,10 @@ public final class Request {
     }
     
     /**
-     * Return the URL for this Request, including query parameters.
+     * Return the URL for this Request, including query parameters (if parameters are
+     * part of the URL).
+     * 
+     * @see #parametersAsPayload() 
      */
     public URL getUrl() throws MalformedURLException {
         if (parametersAsPayload()) {
@@ -225,6 +267,10 @@ public final class Request {
         }
     }
 
+    /**
+     * Return human readable String. Used for debugging.
+     * Returns "{METHOD} {URL}"
+     */
     @Override
     public String toString() {
         try {

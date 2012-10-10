@@ -1,14 +1,12 @@
 /* Credentials.java
  * 
- ******************************************************************************
- *
  * Created: Oct 01, 2012
  * Character encoding: UTF-8
  * 
- * Copyright (c) 2012 - XIAM Solutions B.V. The Netherlands, http://www.xiam.nl
+ ********************************* LICENSE **********************************************
  * 
- ********************************* LICENSE ************************************
- *
+ * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +28,7 @@ import java.io.Serializable;
  * protocol and REST requests.
  *
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
- * @since dropbox-java-client 3.0.2
+ * @since infomas-asl 3.0.2
  */
 public final class Credentials implements Serializable {
 

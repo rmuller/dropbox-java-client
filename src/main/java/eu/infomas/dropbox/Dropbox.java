@@ -1,14 +1,12 @@
 /* DropBox.java
  * 
- ******************************************************************************
- *
  * Created: Oct 01, 2012
  * Character encoding: UTF-8
  * 
- * Copyright (c) 2012 - XIAM Solutions B.V. The Netherlands, http://www.xiam.nl
+ ********************************* LICENSE **********************************************
  * 
- ********************************* LICENSE ************************************
- *
+ * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,6 +35,8 @@ import static eu.infomas.dropbox.Utils.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import net.minidev.json.JSONValue;
@@ -46,7 +46,7 @@ import net.minidev.json.JSONValue;
  * <a href="https://www.dropbox.com/developers/reference/api">Dropbox REST API v1</a>.
  * All operations (REST Requests) are done via this API.
  * <br/>
- * Dropbox does use <a href="http://tools.ietf.org/html/rfc5849">The OAuth 1.0
+ * Dropbox does use <a href="http://tools.ietf.org/html/rfc5849">the OAuth 1.0
  * Protocol</a> which is also supported by this class.
  * <br/>
  * Note that this class is <b>not</b> thread-safe!
@@ -56,36 +56,9 @@ import net.minidev.json.JSONValue;
  * The actual HTTP communication is delegated to {@link RestClient}, which can easily
  * use a different implementation than the default provided by using the
  * Java {@link ServiceLoader service-provider loading facility}.
- * <br/>
- * Example Usage:
- * <pre>
- * // request metadata for a file or directory
- * Dropbox dropbox = new Dropbox("path-to-your-dropbox-configuration-file");
- * Entry entry = dropbox.metadata("/path-to-file-or-directory")
- *     .withList()
- *     .asEntry();
- * // do something with the Entry
- * if (entry.getMimeType.startsWith("image/")) {
- *     ....
- * }
- * </pre>
- * Advantages of using this library instead of the 
- * <a href="https://www.dropbox.com/static/developers/dropbox-java-sdk-1.5.1-docs/index.html">
- * official implementation</a>:
- * <ul>
- * <li>Smaller library with no dependency on Apache HTTP Client, works default with 
- * {@code java.net} package;</li>
- * <li>Swappable HTTP Client implementation;</li>
- * <li>Works (and tested) on Google App Engine (this was the primary reason for creating 
- * this library);</li>
- * <li>More clear (fluent) API;</li>
- * <li>Artifact is OSGi compliant bundle;</li>
- * <li>Faster because <a href="http://code.google.com/p/json-smart/">json-smart</a> is 
- * used instead of {@code json-simple}.</li>
- * </ul>
  * 
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
- * @since dropbox-java-client 3.0.2
+ * @since infomas-asl 3.0.2
  */
 public final class Dropbox {
 
@@ -144,12 +117,12 @@ public final class Dropbox {
     private String authorization;
     private Locale locale = Locale.ENGLISH;
         
-    // Dropbox instance creation & configuration =========================================
+    // Dropbox instance creation & configuration ========================================
     
     /**
      * Create a new {@code Dropbox} instance.
      * This is a low level interface, in practice you mostly will use
-     * {@link Dropbox(String)} or {@link Dropbox(Properties)}.
+     * {@link #Dropbox(String)} or {@link #Dropbox(Properties)}.
      * 
      * @param clientCredentials The client (application) credentials. Mandatory.
      * @param tokenCredentials The token (access or request) credentials, may be 
@@ -203,7 +176,7 @@ public final class Dropbox {
      * the class path. 
      * May not be empty or {@code null}.
      * 
-     * @see Dropbox(java.util.Properties) 
+     * @see #Dropbox(java.util.Properties) 
      */
     public Dropbox(final String configurationPath) throws IOException {
         this(loadProperties(configurationPath, Dropbox.class));
@@ -240,7 +213,7 @@ public final class Dropbox {
         authorization = getAuthorization(clientCredentials, tokenCredentials);
     }
     
-    // Authentication ====================================================================
+    // Authentication ===================================================================
     
     /**
      * First step in the OAuth 1.0 protocol: Temporary Credentials Request. In this
@@ -267,7 +240,7 @@ public final class Dropbox {
      * Redirect the Resource Owner (User) to the endpoint returned by this method. If the
      * Resource Owner approved the access to the resource(s), the Token Credentials can be
      * requested by
-     * {@link #requestTokenCredentials(eu.infomas.rest.dropbox.Credentials) }.
+     * {@link #requestTokenCredentials(eu.infomas.dropbox.Credentials) }.
      *
      * @param temporaryCredentials The Temporary Credentials as returned by
      * {@link #requestTemporaryCredentials() }
@@ -303,7 +276,7 @@ public final class Dropbox {
         return parseCredentials(response);
     }
     
-    // Dropbox accounts ==================================================================
+    // Dropbox accounts =================================================================
 
     /**
      * Retrieves information about the user's account.
@@ -312,197 +285,67 @@ public final class Dropbox {
      * <a href="https://www.dropbox.com/developers/reference/api#account-info">/account/info</a> 
      * service. See the official API Documentation for more information.
      */ 
-    public Account accountInfo() throws IOException {
-        String response = request("GET", API_SERVER, "/account/info")
+    public Account accountInfo() 
+        throws IOException {
+
+        final String response = request("GET", API_SERVER, "/account/info")
             .withHeader("Authorization", authorization)
             .asString(restClient);
-        return new Account(jsonToMap(response));
+        return Account.valueOf(parseJson(response, Map.class));
     }
     
-    // Files and metadata ================================================================
-   
-    /**
-     * Returns a public link directly to a file.
-     * Similar to {@code /shares}. The difference is that this bypasses the Dropbox 
-     * webserver, used to provide a preview of the file, so that you can effectively 
-     * stream the contents of your media.
-     * <br/>
-     * Sample of returned message (JSON):
-     * <pre>
-     * {
-     *    "url": "https://dl.dropbox.com/0/view/2j3mng7pmdqinf9/Apps/INFOMAS/digipub/499.038.jpg", 
-     *    "expires": "Sat, 29 Sep 2012 19:16:20 +0000"
-     * }
-     * </pre>
-     * <br/>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#media">/media</a> 
-     * service. See the official API Documentation for more information.
-     * 
-     * @return The public link (URL)
-     */
-    public String media(final String path) throws IOException {
-        String response = request("POST", API_SERVER, "/media/sandbox/" + path)
-            .withHeader("Authorization", authorization)
-            .asString(restClient);
-        return (String)jsonToMap(response).get("url");
-    }
-    
-    public static final class MetadataService extends BaseService {
-        private int fileLimit = 25000; // default value
-        private String hash;
-        private boolean list;
-        private String revision;
-
-        private MetadataService(Dropbox dropbox, String path) {
-            super(dropbox, path);
-        }
-        /**
-         * 
-
-         */
-        public MetadataService withRevision(String revision) {
-            this.revision = revision;
-            return this;
-        }
-        public MetadataService withFileLimit(int fileLimit) {
-            this.fileLimit = fileLimit;
-            return this;
-        }
-        public MetadataService withHash(String hash) {
-            this.hash = hash;
-            return this;
-        }
-        public MetadataService withList() {
-            this.list = true;
-            return this;
-        }
-        public String asJson() throws IOException {
-            String response = dropbox.request("GET", API_SERVER, "/metadata/sandbox" + path)
-                .withHeader("Authorization", dropbox.authorization)
-                .withParameter("file_limit", fileLimit)
-                .withParameter("hash", hash)
-                .withParameter("list", list)
-                .withParameter("rev", revision)
-                .withParameter("file_limit", fileLimit)
-                .asString(dropbox.restClient);
-            if (response == null) {
-                LOG.log(Level.WARNING, 
-                    "Response is null for path ''/metadata/sandbox/{0}''", path);
-            }
-            return response;
-        }
-        public Entry asEntry() throws IOException {
-            final String json = asJson();
-            final Map<String, Object> map = jsonToMap(json);
-            if (map == null) {
-                LOG.log(Level.WARNING, "Map is null for path ''{0}'', content=''{1}''", 
-                    new Object[] {path, json});
-            }
-            return new Entry(map);
-        }
-    }
+    // Files and metadata ===============================================================
     
     /**
-     * Retrieves file and folder metadata.
-     * <br/>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#metadata">/metadata</a> 
-     * service. See the official API Documentation for more information.
-     * 
-     * @return A builder object to customize the request
+     * Builder for the {@link #filesGet(java.lang.String)} service.
      */
-    public MetadataService metadata(String path) throws IOException {
-        
-        assert path != null && path.startsWith("/");
-        
-        return new MetadataService(this, path);
-    }
-
-    public static final class FilesPut extends BaseService {
-
-        private boolean overwrite;
-        private String parentRev = "";
-
-        private FilesPut(final Dropbox dropbox, final String path) {
-            super(dropbox, path);
-        }
-        
-        public Entry fromInputStream(final InputStream is, final long length) 
-            throws IOException {
-            
-            String response = dropbox.request("PUT", CONTENT_SERVER, 
-                "/files_put/sandbox" + (path.startsWith("/") ? path : "/" + path))
-                .withHeader("Authorization", dropbox.authorization)
-                .withParameter("overwrite", overwrite)
-                .withParameter("parent_rev", parentRev) // maybe empty, not null
-                .withPayload(is)
-                .asString(dropbox.restClient);
-            return new Entry(jsonToMap(response));
-        }
-        
-        public Entry fromFile(final File file) throws IOException {
-            return fromInputStream(new FileInputStream(file), file.length());
-        }
-        
-        public FilesPut withParentRev(final String parentRev) {
-            Utils.notNullOrBlank("parentRev", parentRev);
-            this.parentRev = parentRev;
-            return this;
-        }
-        
-        public FilesPut withOverwrite() {
-            this.overwrite = true;
-            return this;
-        }
-    }
-    
-    /**
-     * Uploads a file using PUT semantics. 
-     * <br/>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#files_put">/files_put</a> 
-     * service. See the official API Documentation for more information.
-     * 
-     * @return The metadata of the file
-     */
-    public FilesPut filesPut(final String path) throws IOException {
-
-        return new FilesPut(this, path);
-    }
-    
-    /**
-     * 
-     */
-    public static final class FilesGetService extends BaseService {
-        private String revision;
+    public static final class FilesGet extends AbstractBuilder {
+        private String rev;
         private int rangeFirst;
         private int rangeLast;
-        private OutputStream out;
-        private FilesGetService(final Dropbox dropbox, final String path) {
+        
+        private FilesGet(final Dropbox dropbox, final String path) {
             super(dropbox, path);
         }
+        
         /**
-         * Specify the revision of the file to retrieve. 
+         * Specify the revision of the file to retrieve ({@code rev}). 
          * If not specified, the most recent revision is used.
          */
-        public FilesGetService withRevision(final String revision) {
-            this.revision = revision;
+        public FilesGet withRev(final String rev) {
+            this.rev = rev;
             return this;
         }
-        public FilesGetService withRange(final int first, final int last) {
+        
+        /**
+         * Specify the byte range to retrieve.
+         * If not specified, the complete file is retrieved.
+         * 
+         * @param first Index position of first byte to retrieve (zero based, inclusive)
+         * @param last Index position of last byte to retrieve (zero based, inclusive)
+         */
+        public FilesGet withRange(final int first, final int last) {
             this.rangeFirst = first;
             this.rangeLast = last;
             return this;
         }
-        public FilesGetService toFile(final File file) throws IOException {
+        
+        /**
+         * Call the service and write the requested file to the specified {@code File}.
+         */
+        public FilesGet toFile(final File file) throws IOException {
             return toOutputStream(new FileOutputStream(file));
         }
-        public FilesGetService toOutputStream(final OutputStream out) throws IOException {
-            this.out = out;
-            Request.Builder builder = dropbox.request("GET", CONTENT_SERVER, "/files/sandbox" + path)
+        
+        /**
+         * Call the service and write the requested file to the specified output
+         * stream.
+         */        
+        public FilesGet toOutputStream(final OutputStream out) throws IOException {
+            Request.Builder builder = dropbox
+                .request("GET", CONTENT_SERVER, "/files/sandbox" + path)
                 .withHeader("Authorization", dropbox.authorization)
-                .withParameter("rev", revision);
+                .withParameter("rev", rev);
             if (rangeLast > 0) {
                 builder.withHeader("Range", "bytes=" + rangeFirst + '-' + rangeLast);
             }
@@ -527,11 +370,278 @@ public final class Dropbox {
      * 
      * @return A builder object to customize the request
      */
-    public FilesGetService filesGet(final String path) throws IOException {
+    public FilesGet filesGet(final String path) throws IOException {
         
-        return new FilesGetService(this, path);
+        return new FilesGet(this, path);
     }
     
+    /**
+     * Builder for the {@link #filesPut(java.lang.String)} service.
+     */
+    public static final class FilesPut extends AbstractBuilder {
+
+        private boolean overwrite;
+        private String parentRev = "";
+
+        private FilesPut(final Dropbox dropbox, final String path) {
+            super(dropbox, path);
+        }
+                
+        /**
+         * Specify the revision of the file you're editing (parent_rev).
+         * The revision may be empty, but not {@code null}.
+         */
+        public FilesPut withParentRev(final String parentRev) {
+            Utils.notNull("parentRev", parentRev);
+            this.parentRev = parentRev;
+            return this;
+        }
+        
+        /**
+         * Specify that an already existing file can be overwritten (overwrite).
+         * Default is that the file is not overwritten, but a new file name is created.
+         */
+        public FilesPut withOverwrite() {
+            this.overwrite = true;
+            return this;
+        }
+        
+        /**
+         * Call the service and upload the data from the specified input stream.
+         * Note that a length must be specified!
+         * Maximum file size limit is 150 MB.
+         */
+        public Entry fromInputStream(final InputStream is, final long length) 
+            throws IOException {
+            
+            String response = dropbox
+                .request("PUT", CONTENT_SERVER, 
+                "/files_put/sandbox" + (path.startsWith("/") ? path : "/" + path))
+                .withHeader("Authorization", dropbox.authorization)
+                .withHeader("Content-Length", Long.toString(length))
+                .withParameter("overwrite", overwrite)
+                .withParameter("parent_rev", parentRev) // maybe empty, not null
+                .withPayload(is)
+                .asString(dropbox.restClient);
+            return Entry.valueOf(parseJson(response, Map.class));
+        }
+        
+        /**
+         * Call the service and upload the data from the specified file.
+         * Maximum file size limit is 150 MB.
+         */
+        public Entry fromFile(final File file) throws IOException {
+            return fromInputStream(new FileInputStream(file), file.length());
+        }
+
+    }
+    
+    /**
+     * Uploads a file using PUT semantics. 
+     * <br/>
+     * This method wraps the 
+     * <a href="https://www.dropbox.com/developers/reference/api#files_put">/files_put</a> 
+     * service. See the official API Documentation for more information.
+     * <br/>
+     * Note that this API does not support the {@code files-POST} service.
+     * Maximum file size limit is 150 MB.
+     * 
+     * @return A builder object to customize the request
+     */
+    public FilesPut filesPut(final String path) throws IOException {
+
+        return new FilesPut(this, path);
+    }
+    
+    /**
+     * Builder for the {@link #metadata(java.lang.String)} service.
+     */
+    public static final class Metadata extends AbstractBuilder {
+        private int fileLimit = 25000; // default value
+        private String hash;
+        private boolean list;
+        private String rev;
+
+        private Metadata(final Dropbox dropbox, final String path) {
+            super(dropbox, path);
+        }
+        
+        /**
+         * Specify the revision to use ({@code rev}). 
+         * Optional.
+         */
+        public Metadata withRev(final String rev) {
+            this.rev = rev;
+            return this;
+        }
+        
+        /**
+         * Specify the file limit to use ({@code file_limit}). 
+         * Optional.
+         */
+        public Metadata withFileLimit(int fileLimit) {
+            this.fileLimit = fileLimit;
+            return this;
+        }
+        
+        /**
+         * Specify the hash to use ({@code hash}). 
+         * Optional.
+         */
+        public Metadata withHash(String hash) {
+            this.hash = hash;
+            return this;
+        }
+        
+        /**
+         * Specify the children (files directories) must be returned when the queried
+         * path is a directory ({@code list}).
+         * Optional, default {@code false}.
+         */
+        public Metadata withList() {
+            this.list = true;
+            return this;
+        }
+        
+        /**
+         * Call the service and return the response as a JSON String.
+         * 
+         * @see #asEntry() 
+         */        
+        public String asJson() throws IOException {
+            final String response = dropbox
+                .request("GET", API_SERVER, "/metadata/sandbox" + path)
+                .withHeader("Authorization", dropbox.authorization)
+                .withParameter("file_limit", fileLimit)
+                .withParameter("hash", hash)
+                .withParameter("list", list)
+                .withParameter("rev", rev)
+                .withParameter("file_limit", fileLimit)
+                .asString(dropbox.restClient);
+            if (response == null) {
+                LOG.log(Level.WARNING, 
+                    "Response is null for path ''/metadata/sandbox/{0}''", path);
+            }
+            return response;
+        }
+        
+        /**
+         * Call the service and return the response as an {@link Entry} object.
+         * 
+         * @see #asJson() 
+         */
+        public Entry asEntry() throws IOException {
+            final String json = asJson();
+            final Map<String, Object> map = parseJson(json, Map.class);
+            if (map == null) {
+                LOG.log(Level.WARNING, "Map is null for path ''{0}'', content=''{1}''", 
+                    new Object[] {path, json});
+            }
+            return Entry.valueOf(map);
+        }
+    }
+    
+    /**
+     * Retrieves file and folder metadata.
+     * <br/>
+     * This method wraps the 
+     * <a href="https://www.dropbox.com/developers/reference/api#metadata">/metadata</a> 
+     * service. See the official API Documentation for more information.
+     * 
+     * @return A builder object to customize the request
+     */
+    public Metadata metadata(final String path) throws IOException {
+        
+        assert path != null && path.startsWith("/");
+        
+        return new Metadata(this, path);
+    }
+    
+    /**
+     * Return a list of "delta entries", which are instructions on how to update your 
+     * local state to match the server's state.
+     * <br/>
+     * This method wraps the 
+     * <a href="https://www.dropbox.com/developers/reference/api#delta">/delta</a> 
+     * service. See the official API Documentation for more information.
+     * 
+     * @param cursor On the first call, you should pass in {@code null}.  
+     *               On subsequent calls, pass in the {@link DeltaPage#cursor cursor} 
+     *               returned by the previous call
+     */
+    public DeltaPage delta(final String cursor) throws IOException {
+        final String response = request("POST", API_SERVER, "/delta")
+            .withHeader("Authorization", authorization)
+            .withParameter("cursor", cursor)
+            .asString(restClient);
+        
+        final DeltaPage page = new DeltaPage(parseJson(response, Map.class));
+        //writeContentToFile(response, new File("./delta." + page.getCursor() + ".json"));
+        return page;
+    }
+    
+    /**
+     * Obtains metadata for the previous revisions of a file.
+     * <br/>
+     * This method wraps the 
+     * <a href="https://www.dropbox.com/developers/reference/api#revisions">/revisions</a> 
+     * service. See the official API Documentation for more information.
+     * 
+     * @param path On the first call, you should pass in {@code null}.  
+     *               On subsequent calls, pass in the {@link DeltaPage#cursor cursor} 
+     *               returned by the previous call
+     * @param limit rev_limit Default is 10. Max is 1,000. When listing a file, the 
+     * service will not report listings containing more than the amount specified and 
+     * will instead respond with a 406 (Not Acceptable) status response.
+     */
+    public List<Entry> revisions(final String path, final int limit) 
+        throws IOException {
+        
+        final String response = request("GET", API_SERVER, "/revisions/sandbox/" + path)
+            .withHeader("Authorization", authorization)
+            .withParameter("rev_limit", limit)
+            .asString(restClient);
+        
+        final List<Map<String, Object>> jsonList = 
+            (List<Map<String, Object>>)parseJson(response, List.class);
+        final List<Entry> entries = new ArrayList<Entry>(jsonList.size());
+        for (final Map<String, Object> jsonMap : jsonList) {
+            final Entry entry = Entry.valueOf(jsonMap);
+            if (entry != null) {
+                entries.add(entry);
+            }
+        }
+        //writeContentToFile(response, new File("./revisions.json"));
+        return entries;
+    }   
+    
+    /**
+     * Returns a public link directly to a file.
+     * Similar to {@code /shares}. The difference is that this bypasses the Dropbox 
+     * webserver, used to provide a preview of the file, so that you can effectively 
+     * stream the contents of your media.
+     * <br/>
+     * Sample of returned message (JSON):
+     * <pre>
+     * {
+     *    "url": "https://dl.dropbox.com/0/view/2j3mng7pmdqinf9/Apps/INFOMAS/digipub/499.038.jpg", 
+     *    "expires": "Sat, 29 Sep 2012 19:16:20 +0000"
+     * }
+     * </pre>
+     * <br/>
+     * This method wraps the 
+     * <a href="https://www.dropbox.com/developers/reference/api#media">/media</a> 
+     * service. See the official API Documentation for more information.
+     * 
+     * @return The public link (URL)
+     */
+    public String media(final String path) throws IOException {
+        final String response = request("POST", API_SERVER, "/media/sandbox/" + path)
+            .withHeader("Authorization", authorization)
+            .asString(restClient);
+        return (String)parseJson(response, Map.class).get("url");
+    }
+
     /**
      * Gets a thumbnail for an image.
      * Default is a JPEG image of 64x64 pixels.
@@ -555,7 +665,7 @@ public final class Dropbox {
             .toOutputStream(restClient, out);
     }
     
-    // File operations ===================================================================
+    // File operations ==================================================================
     
     /**
      * Copies a file or folder to a new location.
@@ -613,16 +723,16 @@ public final class Dropbox {
         return fileops("move", fromPath, toPath); 
     }
     
-    // Implementation / private ==========================================================
+    // Implementation / private =========================================================
 
     /**
      * Base class used by the "request builders".
      */
-    private static abstract class BaseService {
+    private static abstract class AbstractBuilder {
         protected final Dropbox dropbox;
         protected final String path;
 
-        private BaseService(final Dropbox dropbox, final String path) {
+        private AbstractBuilder(final Dropbox dropbox, final String path) {
             this.dropbox = dropbox;
             this.path = path;
         }
@@ -663,15 +773,15 @@ public final class Dropbox {
             .withParameter("to_path", toPath)
             .withHeader("Authorization", authorization)
             .asString(restClient);
-        return new Entry(jsonToMap(response));     
+        return Entry.valueOf(parseJson(response, Map.class));     
     }
     
     /**
      * All JSON parsing is delegated to this method.
      * Changing JSON parser must be easy :)
      */
-    private static Map<String, Object> jsonToMap(final String json) {
-        return (Map<String, Object>) JSONValue.parse(json);
+    private static <T> T parseJson(final String json, final Class<T> type) {
+        return type.cast(JSONValue.parse(json));
     }
-    
+
 }

@@ -25,6 +25,7 @@ package eu.infomas.dropbox;
  * Represents the size of thumb nails that the API can return.
  * 
  * @author Original Author is Dropbox
+ * @since infomas-asl 3.0.2
  */
 public enum ThumbSize {
 

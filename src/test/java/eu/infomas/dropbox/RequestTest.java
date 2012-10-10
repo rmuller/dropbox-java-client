@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public final class URLBuilderTest {
+public final class RequestTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testRelativePath() throws MalformedURLException {

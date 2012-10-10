@@ -30,6 +30,7 @@ import static eu.infomas.dropbox.Utils.*;
  * 
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (small modifications)
+ * @since infomas-asl 3.0.2
  */
 public final class Account implements Serializable {
 
@@ -46,7 +47,7 @@ public final class Account implements Serializable {
     /**
      * Creates an account from a Map.
      *
-     * @param map a Map that looks like:      
+     * @param jsonMap a Map that looks like:      
      * <pre>
      * {"country": "",
      *  "display_name": "John Q. User",
@@ -58,16 +59,20 @@ public final class Account implements Serializable {
      *  "uid": "174"}
      * </pre>
      */
-    Account(Map<String, Object> map) {
-        country = asString(map, "country");
-        displayName = asString(map, "display_name");
-        uid = asNumber(map, "uid").longValue();
-        referralLink = asString(map, "referral_link");
+    private Account(Map<String, Object> jsonMap) {
+        country = asString(jsonMap, "country");
+        displayName = asString(jsonMap, "display_name");
+        uid = asNumber(jsonMap, "uid").longValue();
+        referralLink = asString(jsonMap, "referral_link");
         
-        final Map quotamap = (Map<String, Object>) map.get("quota_info");
+        final Map quotamap = (Map<String, Object>) jsonMap.get("quota_info");
         quota = asNumber(quotamap, "quota").longValue();
         quotaNormal = asNumber(quotamap, "normal").longValue();
         quotaShared = asNumber(quotamap, "shared").longValue();
+    }
+    
+    static Account valueOf(final Map<String, Object> jsonMap) {
+        return jsonMap == null ? null : new Account(jsonMap);
     }
     
     /**

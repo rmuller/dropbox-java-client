@@ -1,14 +1,12 @@
 /* RestClient.java
  * 
- ******************************************************************************
- *
  * Created: Oct 01, 2012
  * Character encoding: UTF-8
  * 
- * Copyright (c) 2012 - XIAM Solutions B.V. The Netherlands, http://www.xiam.nl
+ ********************************* LICENSE **********************************************
  * 
- ********************************* LICENSE ************************************
- *
+ * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,14 +29,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * {@code RestClient} defines the interface for a simple HTTP REST client, used by
+ * {@code RestClient} defines the interface for a simple HTTP(S) REST client, used by
  * {@link Dropbox}. It is <b>not</b> a general purpose REST Client! 
  * Functionality is very simple and "just enough" for getting {@link Dropbox} working. 
- * Actual implementations must extend this class and is discovered via the standard Java
- * {@link ServiceLoader service-provider loading facility}.
+ * Actual implementations must extend this class and are discovered via the standard Java
+ * {@link ServiceLoader service-provider loading} facility.
  *
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
- * @since dropbox-java-client 3.0.2
+ * @since infomas-asl 3.0.2
  */
 public abstract class RestClient {
 

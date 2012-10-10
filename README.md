@@ -1,19 +1,25 @@
 # dropbox-java-client
 
-A OSGi based Java Client for the Dropbox REST Service without dependencies, 
-runs on Google App Engine.
+[![Build Status](https://secure.travis-ci.org/rmuller/dropbox-java-client.png)](http://travis-ci.org/rmuller/dropbox-java-client)
+
+An easy to use, OSGi based Java client for the Dropbox REST API v1, runs on Google App Engine.
+
+Current status: Alpha. API not (yet) stabilized. Not all Services not (yet) implemented.
+However, the current functionality is complete and tested.
 
 ## Quick Facts
 + Easy to use, "fluent" API
 + Runs on Google App Engine (GAE)
 + Language: Java 6 SE or better
 + Tested with both Oracle JDK 6 and 7 and OpenJDK 6 and 7 (Last three VM's using [Travis CI Server](https://travis-ci.org/))
++ OSGi Bundle artifact
 + Build System: Maven 3
 + Apache License, Version 2.0
 
 #### Example Usage:
-First put `dropbox-java-client-{version}.jar` and the only dependency, `json-smart-1.1.1.jar`, 
-in the class path.
+First put `dropbox-java-client-{version}.jar` and `json-smart-1.1.1.jar` in the class path.
+
+For more information, see [Javadoc](http://rmuller.github.com/dropbox-java-client/)
 
 ``` java
 /* 
@@ -22,8 +28,8 @@ Credentials are stored in a Properties File, format:
 # Application credentials are mandatory
 dropbox.app.key={key}
 dropbox.app.secret={secret token}
-# Access credentials are optional. If not present the API offers operations the 
-# get the Access credentials / tokens
+# Access credentials are optional. If not present the API offers operations to 
+# query Access credentials / tokens
 dropbox.access.key={key}
 dropbox.access.secret={secret token}
 # Language is optional, default is "en"

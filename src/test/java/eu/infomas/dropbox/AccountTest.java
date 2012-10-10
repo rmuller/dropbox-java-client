@@ -22,7 +22,7 @@ public final class AccountTest {
     @Test
     public void test() {
         Map map = (Map) JSONValue.parse(JSON);
-        Account account = new Account(map);
+        Account account = Account.valueOf(map);
 
         assertEquals(174L, account.getUid());
         assertEquals("", account.getCountry());

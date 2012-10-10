@@ -1,14 +1,12 @@
 /* Utils.java
  * 
- ******************************************************************************
- *
  * Created: Oct 01, 2012
  * Character encoding: UTF-8
  * 
- * Copyright (c) 2012 - XIAM Solutions B.V. The Netherlands, http://www.xiam.nl
+ ********************************* LICENSE **********************************************
  * 
- ********************************* LICENSE ************************************
- *
+ * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,11 +23,15 @@ package eu.infomas.dropbox;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -50,7 +52,7 @@ import java.util.regex.Pattern;
  * {@code Utils} offers some utility methods for classes in this package.
  * 
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
- * @since dropbox-java-client 3.0.2
+ * @since infomas-asl 3.0.2
  */
 final class Utils {
 
@@ -169,11 +171,16 @@ final class Utils {
         throw illegalArgumentException(key, value, String.class);
     }
 
-    static String notNullOrBlank(final String name, final String value) {
+    static String notNull(final String name, final String value) {
         assert name != null;
         if (value == null) {
             throw new IllegalArgumentException("'" + name + "' is null");
         }
+        return value;
+    }
+    
+    static String notNullOrBlank(final String name, final String value) {
+        notNull(name, value);
         if (value.trim().isEmpty()) {
             throw new IllegalArgumentException("'" + name + "' is empty");
         }
@@ -238,6 +245,21 @@ final class Utils {
         } finally {
             close(source);
             close(target);
+        }
+    }
+    
+    /**
+     * Only used for debugging during development!
+     */
+    static void writeContentToFile(final String jsonContent, final File file) 
+        throws IOException {
+        
+        Writer w = null;
+        try {
+            w = new OutputStreamWriter(new FileOutputStream(file), UTF8);
+            w.write(jsonContent);
+        } finally {
+            close(w);
         }
     }
     

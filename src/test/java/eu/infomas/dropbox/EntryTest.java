@@ -22,7 +22,7 @@ public final class EntryTest {
     @Test
     public void test() {
         Map map = (Map) JSONValue.parse(JSON);
-        Entry entry = new Entry(map);
+        Entry entry = Entry.valueOf(map);
 
         assertEquals(0, entry.getBytes());
         assertFalse(entry.isDeleted());
