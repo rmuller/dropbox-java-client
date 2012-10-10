@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-clean javadoc:javadoc ghSite:site</actionName>
+        <displayName>clean javadoc:javadoc ghSite:site</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>javadoc:javadoc</goal>
+            <goal>ghSite:site</goal>
+        </goals>
+    </action>
+</actions>

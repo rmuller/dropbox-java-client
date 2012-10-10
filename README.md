@@ -4,7 +4,7 @@
 
 An easy to use, OSGi based Java client for the Dropbox REST API v1, runs on Google App Engine.
 
-Current status: Alpha. API not (yet) stabilized. Not all Services not (yet) implemented.
+Current status: Alpha. API not (yet) stabilized. Not all Services (yet) implemented.
 However, the current functionality is complete and tested.
 
 ## Quick Facts

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * A page of {@link DeltaEntry DeltaEntry}s (returned by {@link #delta delta}).
+ * A page of {@link DeltaEntry}s (returned by {@link Dropbox#delta(java.lang.String)}).
  *
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
@@ -53,7 +53,7 @@ public final class DeltaPage {
 
     /**
      * A string that is used to keep track of your current state. On the next call to
-     * {@link #delta delta}, pass in this value to pick up where you left off.
+     * {@link Dropbox#delta(java.lang.String) }, pass in this value to pick up where you left off.
      */
     public String getCursor() {
         return cursor;
@@ -80,7 +80,7 @@ public final class DeltaPage {
     /**
      * If
      * <code>true</code>, then there are more entries available; you can call {@link
-     * #delta delta} again immediately to retrieve those entries. If
+     * Dropbox#delta(java.lang.String) } again immediately to retrieve those entries. If
      * <code>false</code>, then wait at least 5 minutes (preferably longer) before
      * checking again.
      */
