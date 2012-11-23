@@ -2,14 +2,11 @@
 <!-- 
  * pom.xml
  *
- ******************************************************************************
- *
- * Created: Dec 13, 2011
- * Character encoding: UTF-8
- * 
- * Copyright (c) 2011 - XIAM Solutions B.V. The Netherlands, http://www.xiam.nl
+ * Created: Oct 01, 2012
  * 
  ********************************* LICENSE ************************************
+ *
+ * Copyright (c) 2011 XIAM Solutions B.V. (http://www.xiam.nl)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,23 +32,89 @@
     </parent>
     <artifactId>dropbox-java-client</artifactId>
     <packaging>bundle</packaging>
+    <version>1.0.0-SNAPSHOT</version>
     <name>INFOMAS ASL :: Dropbox Java Client</name>    
     <description>
-A OSGi based Java Client for the Dropbox REST Service without dependencies, 
-runs on Google App Engine.
+        An easy to use, OSGi based Java client for the Dropbox REST API v1, runs on Google App Engine.
     </description>
+    <url>https://github.com/rmuller/dropbox-java-client</url>
+    
+    <properties>
+        <github.global.server>github</github.global.server>
+    </properties>
+    
+    <scm>
+        <url>https://github.com/rmuller/dropbox-java-client</url>
+        <connection>scm:git:git://github.com/rmuller/dropbox-java-client.git</connection>
+        <developerConnection>scm:git:git@github.com:rmuller/dropbox-java-client.git</developerConnection>
+    </scm>
+    
+    <issueManagement>
+        <url>https://github.com/rmuller/dropbox-java-client/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis-CI</system>
+        <url>https://travis-ci.org/#!/rmuller/dropbox-java-client</url>
+    </ciManagement>
     
     <dependencies>
         <!-- faster drop-in repalcement for json-simple -->
-        <dependency>
+        <!--        <dependency>
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
             <version>1.1.1</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.noggit</groupId>
+            <artifactId>noggit</artifactId>
+            <version>0.5</version>
         </dependency>
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>            
+            <resource>
+                <directory>${project.basedir}</directory>
+                <targetPath>META-INF</targetPath>
+                <filtering>false</filtering>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>checkstyle-main</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <!-- https://github.com/kohanyirobert/checkstyle/blob/master/main.xml
+                            becomes: https://raw.github.com/kohanyirobert/checkstyle/master/main.xml
+                            -->
+                            <configLocation>https://raw.github.com/kohanyirobert/checkstyle/master/main.xml</configLocation>
+                            <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -63,7 +126,37 @@ runs on Google App Engine.
                     </instructions>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <links>
+                        <link>http://docs.oracle.com/javase/6/docs/api/</link>
+                    </links>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- ghSite:site -->
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.7</version>
+                <configuration>
+                    <message>Creating gh-pages with JavaDoc for ${project.artifactId}-${project.version}</message>
+                    <!-- default is ${project.reporting.outputDirectory} == ./target/site      -->        
+                    <outputDirectory>${project.build.directory}/site/apidocs</outputDirectory>    
+                    <!--<path>apidocs</path>-->
+                    <!--<merge>true</merge>-->
+                </configuration>
+                <!--                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <phase>javadoc</phase>
+                    </execution>
+                </executions>-->
+            </plugin>            
         </plugins>
     </build>
-    
+
 </project>
