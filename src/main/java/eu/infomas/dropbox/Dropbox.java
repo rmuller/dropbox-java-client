@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
-import net.minidev.json.JSONValue;
 
 /**
  * {@code DropBox} offers an easy to use interface for working with the 
@@ -311,6 +310,8 @@ public final class Dropbox {
         /**
          * Specify the revision of the file to retrieve ({@code rev}). 
          * If not specified, the most recent revision is used.
+         * 
+         * @return The {@code FilesGet} Builder
          */
         public FilesGet withRev(final String rev) {
             this.rev = rev;
@@ -323,8 +324,17 @@ public final class Dropbox {
          * 
          * @param first Index position of first byte to retrieve (zero based, inclusive)
          * @param last Index position of last byte to retrieve (zero based, inclusive)
+         * 
+         * @return The {@code FilesGet} Builder
          */
         public FilesGet withRange(final int first, final int last) {
+            if (first < 0) {
+                throw new IllegalArgumentException("'first' < 0: " + first);
+            }
+            if (first >= last) {
+                throw new IllegalArgumentException(
+                    "'first' >= 'last': " + first + " >= " + last);
+            }
             this.rangeFirst = first;
             this.rangeLast = last;
             return this;
@@ -332,16 +342,20 @@ public final class Dropbox {
         
         /**
          * Call the service and write the requested file to the specified {@code File}.
+         * 
+         * @return The bytes written to the file (file size)
          */
-        public FilesGet toFile(final File file) throws IOException {
+        public long toFile(final File file) throws IOException {
             return toOutputStream(new FileOutputStream(file));
         }
         
         /**
          * Call the service and write the requested file to the specified output
          * stream.
+         * 
+         * @return The bytes written to the output stream
          */        
-        public FilesGet toOutputStream(final OutputStream out) throws IOException {
+        public long toOutputStream(final OutputStream out) throws IOException {
             Request.Builder builder = dropbox
                 .request("GET", CONTENT_SERVER, "/files/sandbox" + path)
                 .withHeader("Authorization", dropbox.authorization)
@@ -349,8 +363,7 @@ public final class Dropbox {
             if (rangeLast > 0) {
                 builder.withHeader("Range", "bytes=" + rangeFirst + '-' + rangeLast);
             }
-            builder.toOutputStream(dropbox.restClient, out);
-            return this;
+            return builder.toOutputStream(dropbox.restClient, out);
         }
     }
     
@@ -378,7 +391,7 @@ public final class Dropbox {
     /**
      * Builder for the {@link #filesPut(java.lang.String)} service.
      */
-    public static final class FilesPut extends AbstractBuilder {
+    public static class FilesPut extends AbstractBuilder {
 
         private boolean overwrite;
         private String parentRev = "";
@@ -414,7 +427,7 @@ public final class Dropbox {
         public Entry fromInputStream(final InputStream is, final long length) 
             throws IOException {
             
-            String response = dropbox
+            final String response = dropbox
                 .request("PUT", CONTENT_SERVER, 
                 "/files_put/sandbox" + (path.startsWith("/") ? path : "/" + path))
                 .withHeader("Authorization", dropbox.authorization)
@@ -478,8 +491,9 @@ public final class Dropbox {
         /**
          * Specify the file limit to use ({@code file_limit}). 
          * Optional.
+         * Default value is 25000.
          */
-        public Metadata withFileLimit(int fileLimit) {
+        public Metadata withFileLimit(final int fileLimit) {
             this.fileLimit = fileLimit;
             return this;
         }
@@ -488,7 +502,7 @@ public final class Dropbox {
          * Specify the hash to use ({@code hash}). 
          * Optional.
          */
-        public Metadata withHash(String hash) {
+        public Metadata withHash(final String hash) {
             this.hash = hash;
             return this;
         }
@@ -551,8 +565,6 @@ public final class Dropbox {
      * @return A builder object to customize the request
      */
     public Metadata metadata(final String path) throws IOException {
-        
-        assert path != null && path.startsWith("/");
         
         return new Metadata(this, path);
     }
@@ -665,6 +677,69 @@ public final class Dropbox {
             .toOutputStream(restClient, out);
     }
     
+    // http://stackoverflow.com/questions/5346726/java-inheritance-using-builder-pattern
+    public static final class ChunkedFilesPut extends FilesPut {
+        
+        private int chunkSize;
+        
+        private ChunkedFilesPut(final Dropbox dropbox, final String path) {
+            super(dropbox, path);
+            withChunkSize(4);
+        }
+        
+        /**
+         * Specify the chuck size in MB.
+         * If not specified, 4 MB is used as default.
+         * The maximum chunk size is 150 MB.
+         */
+        public ChunkedFilesPut withChunkSize(final int chunkSize) {
+            if (chunkSize <= 0 || chunkSize > 150) {
+                throw new IllegalArgumentException("Invalid chunk size: " + chunkSize);
+            }
+            this.chunkSize = chunkSize * 1024 * 1024;
+            return this;
+        }
+        
+        /**
+         * Call the service and upload the data from the specified input stream.
+         * Note that a length must be specified!
+         * Maximum file size limit is 150 MB.
+         */
+        @Override
+        public Entry fromInputStream(final InputStream is, final long length) 
+            throws IOException {
+            
+            String uploadId = ""; // at first PUT, this should be empty
+            long offset = 0;
+            do {
+                // response holds JSON String with "upload_id", "offset" and "expires"
+                final String response = dropbox.request("PUT", CONTENT_SERVER, "/chunked_upload")
+                    .withHeader("Authorization", dropbox.authorization)
+                    .withParameter("upload_id", uploadId)
+                    .withParameter("offset", offset)
+                    .withPayload(is)
+                    .asString(dropbox.restClient);
+                final Map<String, Object> json = parseJson(response, Map.class);
+                uploadId = asString(json, "upload_id");
+                offset = asLong(json, "offset");
+            } while (true);
+        }
+        
+    }
+    /**
+     * Uploads large files to Dropbox in multiple chunks. 
+     * Also has the ability to resume if the upload is interrupted. This allows for 
+     * uploads larger than the {@code /files_put} maximum of 150 MB.
+     * <br/>
+     * This method wraps the 
+     * <a href="https://www.dropbox.com/developers/reference/api#chunked-upload">/chunked_upload</a> 
+     * service. See the official API Documentation for more information.
+     */
+    public ChunkedFilesPut chunkedUpload(final String path) throws IOException {
+        
+        return new ChunkedFilesPut(this, path);
+    }
+    
     // File operations ==================================================================
     
     /**
@@ -733,6 +808,10 @@ public final class Dropbox {
         protected final String path;
 
         private AbstractBuilder(final Dropbox dropbox, final String path) {
+            assert dropbox != null;
+            if (!path.isEmpty() && !path.startsWith("/")) {
+                throw new IllegalArgumentException("'path' must be absolute: " + path);
+            }
             this.dropbox = dropbox;
             this.path = path;
         }
@@ -774,14 +853,6 @@ public final class Dropbox {
             .withHeader("Authorization", authorization)
             .asString(restClient);
         return Entry.valueOf(parseJson(response, Map.class));     
-    }
-    
-    /**
-     * All JSON parsing is delegated to this method.
-     * Changing JSON parser must be easy :)
-     */
-    private static <T> T parseJson(final String json, final Class<T> type) {
-        return type.cast(JSONValue.parse(json));
     }
 
 }

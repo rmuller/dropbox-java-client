@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A single entry in a {@link DeltaPage DeltaPage}.
+ * A single entry in a {@link DeltaPage}.
  *
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
@@ -42,13 +42,13 @@ public final class DeltaEntry {
     }
 
     /**
-     * The lower-cased path of the entry. Dropbox compares file paths in a
-     * case-insensitive manner. For example, an entry for
-     * <code>"/readme.txt"</code> should overwrite the entry for
+     * The lower-cased path of the entry. 
+     * Dropbox compares file paths in a case-insensitive manner. For example, 
+     * an entry for <code>"/readme.txt"</code> should overwrite the entry for
      * <code>"/ReadMe.TXT"</code>.
-     *
-     * <p> To get the original case-preserved path, look in the {@link #metadata metadata}
-     * field. </p>
+     * <br/>
+     * To get the original case-preserved path, look in the {@link #metadata metadata}
+     * field.
      */
     public String getLowerCasedPath() {
         return lcPath;
@@ -60,17 +60,20 @@ public final class DeltaEntry {
      * the file system. To update your local state to match, delete whatever is at that
      * path, including any children. If your local state doesn't have anything at this
      * path, ignore this entry.
-     *
-     * <p> If this is not
-     * <code>null</code>, it means that Dropbox has a file/folder at this path with the
-     * given metadata. To update your local state to match, add the entry to your local
-     * state as well. </p> <ul> <li> If the path refers to parent folders that don't exist
-     * yet in your local state, create those parent folders in your local state. </li>
+     * <br/>
+     * If this is not <code>null</code>, it means that Dropbox has a file/folder at this 
+     * path with the given metadata. To update your local state to match, add the entry 
+     * to your local state as well.
+     * <ul> 
+     * <li> If the path refers to parent folders that don't exist
+     * yet in your local state, create those parent folders in your local state.</li>
      * <li> If the metadata is for a file, replace whatever your local state has at that
-     * path with the new entry. </li> <li> If the metadata is for a folder, check what
-     * your local state has at the path. If it's a file, replace it with the new entry. If
-     * it's a folder, apply the new metadata to the folder, but do not modify the folder's
-     * children. </li> </ul>
+     * path with the new entry.</li>
+     * <li> If the metadata is for a folder, check what your local state has at the path. 
+     * If it's a file, replace it with the new entry. If it's a folder, apply the new 
+     * metadata to the folder, but do not modify the folder's
+     * children.</li>
+     * </ul>
      */
     public Entry getMetadata() {
         return metadata;

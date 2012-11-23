@@ -42,8 +42,8 @@ import java.util.Collection;
  * creating new {@code Request} instances. The actual HTTP(S) Request is delegated 
  * to a {@link RestClient} implementation.
  * <br/>
- * Note that this is a low-level API. In most uses cases you do not need this class
- * (interfacing is done via {@link Dropbox} API.
+ * Note that this type is part of the low-level API. In most uses cases you do not need 
+ * this class (interfacing is done via {@link Dropbox} API).
  * <br/>
  * Example usage:
  * <pre>
@@ -175,11 +175,13 @@ public final class Request {
         /**
          * Execute the request, using the specified {@code RestClient} implementation
          * and write the response to the specified output stream.
+         * 
+         * @return The bytes written to the output stream
          */  
-        public void toOutputStream(final RestClient client, final OutputStream responseStream) 
+        public long toOutputStream(final RestClient client, final OutputStream responseStream) 
             throws IOException {
             
-            client.toOutputStream(request, responseStream);
+            return client.toOutputStream(request, responseStream);
         }
             
         /**
@@ -193,17 +195,21 @@ public final class Request {
         /**
          * Execute the request, using the specified {@code RestClient} implementation
          * and write the response to the specified file.
+         * 
+         * @return The bytes written to the file (file size)
          */
-        public void toFile(final RestClient client, final String path) throws IOException {
-            toOutputStream(client, new FileOutputStream(path));
+        public long toFile(final RestClient client, final String path) throws IOException {
+            return toOutputStream(client, new FileOutputStream(path));
         }
         
         /**
          * Execute the request, using the specified {@code RestClient} implementation
          * and write the response to the specified file.
+         * 
+         * @return The bytes written to the file (file size)
          */        
-        public void toFile(final RestClient client, final File file) throws IOException {
-            toOutputStream(client, new FileOutputStream(file));
+        public long toFile(final RestClient client, final File file) throws IOException {
+            return toOutputStream(client, new FileOutputStream(file));
         }
         
     }

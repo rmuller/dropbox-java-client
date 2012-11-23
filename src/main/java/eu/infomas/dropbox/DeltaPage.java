@@ -24,10 +24,11 @@ package eu.infomas.dropbox;
 import java.util.List;
 import static eu.infomas.dropbox.Utils.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 /**
- * A page of {@link DeltaEntry}s (returned by {@link Dropbox#delta(java.lang.String)}).
+ * A page of {@link DeltaEntry}s, returned by {@link Dropbox#delta(java.lang.String)}.
  *
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
@@ -52,8 +53,9 @@ public final class DeltaPage {
     }
 
     /**
-     * A string that is used to keep track of your current state. On the next call to
-     * {@link Dropbox#delta(java.lang.String) }, pass in this value to pick up where you left off.
+     * A string that is used to keep track of your current state. 
+     * On the next call to {@link Dropbox#delta(java.lang.String) }, 
+     * pass in this value to pick up where you left off.
      */
     public String getCursor() {
         return cursor;
@@ -74,12 +76,11 @@ public final class DeltaPage {
      * state.
      */
     public List<DeltaEntry> getEntries() {
-        return entries;
+        return Collections.unmodifiableList(entries);
     }
 
     /**
-     * If
-     * <code>true</code>, then there are more entries available; you can call {@link
+     * If <code>true</code>, then there are more entries available; you can call {@link
      * Dropbox#delta(java.lang.String) } again immediately to retrieve those entries. If
      * <code>false</code>, then wait at least 5 minutes (preferably longer) before
      * checking again.

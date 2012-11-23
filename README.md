@@ -4,16 +4,20 @@
 
 An easy to use, OSGi based Java client for the Dropbox REST API v1, runs on Google App Engine.
 
-Current status: Alpha. API not (yet) stabilized. Not all Services (yet) implemented.
+#### Current status: Alpha
+API not (yet) stabilized. Not all REST Services (yet) implemented.
 However, the current functionality is complete and tested.
+
+TODO: https://github.com/yonik/noggit
 
 ## Quick Facts
 + Easy to use, "fluent" API
 + Runs on Google App Engine (GAE)
 + Language: Java 6 SE or better
 + Tested with both Oracle JDK 6 and 7 and OpenJDK 6 and 7 (Last three VM's using [Travis CI Server](https://travis-ci.org/))
-+ OSGi Bundle artifact
++ Standard JUL Logging (`java.util.logging`)
 + Build System: Maven 3
++ OSGi Bundle artifact
 + Apache License, Version 2.0
 
 #### Example Usage:

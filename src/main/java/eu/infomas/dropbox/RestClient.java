@@ -30,10 +30,15 @@ import java.util.logging.Logger;
 
 /**
  * {@code RestClient} defines the interface for a simple HTTP(S) REST client, used by
- * {@link Dropbox}. It is <b>not</b> a general purpose REST Client! 
+ * {@link Dropbox} and {@link Request}. 
+ * It is <b>not</b> a general purpose REST Client!
+ * <br/>
  * Functionality is very simple and "just enough" for getting {@link Dropbox} working. 
  * Actual implementations must extend this class and are discovered via the standard Java
  * {@link ServiceLoader service-provider loading} facility.
+ * <br/>
+ * Note that this type is part of the low-level API. In most uses cases you do not need 
+ * this class (interfacing is done via {@link Dropbox} API).
  *
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
  * @since infomas-asl 3.0.2
@@ -86,8 +91,10 @@ public abstract class RestClient {
      * 
      * @param request The request
      * @param responseStream The data from the response message body (payload)
+     * 
+     * @return The bytes written to the output stream
      */    
-    public abstract void toOutputStream(final Request request, final OutputStream responseStream)
+    public abstract long toOutputStream(final Request request, final OutputStream responseStream)
         throws IOException;
     
 }

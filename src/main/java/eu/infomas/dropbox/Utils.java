@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -47,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.noggit.ObjectBuilder;
 
 /**
  * {@code Utils} offers some utility methods for classes in this package.
@@ -144,6 +146,10 @@ final class Utils {
         throw illegalArgumentException(key, value, Number.class);
     }
 
+    static long asLong(final Map<String, Object> map, final String key) {
+        return asNumber(map, key).longValue();
+    }
+    
     static boolean asBoolean(final Map<String, Object> map, final String key) {
         final Object value = map.get(key);
         if (value == null) {
@@ -171,7 +177,7 @@ final class Utils {
         throw illegalArgumentException(key, value, String.class);
     }
 
-    static String notNull(final String name, final String value) {
+    static <T> T notNull(final String name, final T value) {
         assert name != null;
         if (value == null) {
             throw new IllegalArgumentException("'" + name + "' is null");
@@ -232,16 +238,21 @@ final class Utils {
     /**
      * Copies the supplied {@code InputStream} to the provided {@code OutputStream}. 
      * Both streams are always closed, before this method returns.
+     * 
+     * @return The bytes copied
      */
-    static void copyStream(final InputStream source, final OutputStream target)
+    static long copyStream(final InputStream source, final OutputStream target)
         throws IOException {
 
+        long size = 0L;
         try {
             final byte[] buffer = new byte[BUFFER_SIZE];
             int length;
             while ((length = source.read(buffer, 0, buffer.length)) >= 0) {
+                size += length;
                 target.write(buffer, 0, length);
             }
+            return size;
         } finally {
             close(source);
             close(target);
@@ -251,13 +262,13 @@ final class Utils {
     /**
      * Only used for debugging during development!
      */
-    static void writeContentToFile(final String jsonContent, final File file) 
+    static void writeContentToFile(final String string, final File file) 
         throws IOException {
         
         Writer w = null;
         try {
             w = new OutputStreamWriter(new FileOutputStream(file), UTF8);
-            w.write(jsonContent);
+            w.write(string);
         } finally {
             close(w);
         }
@@ -269,6 +280,22 @@ final class Utils {
     static void close(final Closeable closeable) throws IOException {
         if (closeable != null) {
             closeable.close();
+        }
+    }
+    
+    /**
+     * All JSON parsing is delegated to this method.
+     * This single method "hides" the actual JSON parser implementation for this
+     * whole package.
+     * Changing JSON parser must be easy :)
+     */
+    static <T> T parseJson(final String json, final Class<T> type) throws IOException {
+        if (type == List.class || type == Map.class) {
+            //return type.cast(JSONValue.parse(json));
+            return type.cast(ObjectBuilder.fromJSON(json));
+        } else {
+            throw new AssertionError(
+                "JSON data can only be parsed to a Map or List: " + type.getName());
         }
     }
     

@@ -2,10 +2,10 @@ package eu.infomas.dropbox;
 
 import java.io.IOException;
 import java.util.Map;
-import net.minidev.json.JSONValue;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
+import static eu.infomas.dropbox.Utils.*;
 
 public final class EntryTest {
 
@@ -20,8 +20,8 @@ public final class EntryTest {
     }
 
     @Test
-    public void test() {
-        Map map = (Map) JSONValue.parse(JSON);
+    public void test() throws IOException {
+        Map map = parseJson(JSON, Map.class);
         Entry entry = Entry.valueOf(map);
 
         assertEquals(0, entry.getBytes());

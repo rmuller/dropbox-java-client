@@ -30,8 +30,14 @@ package eu.infomas.dropbox;
  */
 public enum ThumbFormat {
 
+    /**
+     * The PNG Image format.
+     */
     PNG("image/png", ".png"), 
     
+    /**
+     * The JPEG Image format.
+     */    
     JPEG("image/jpeg", ".jpg");
     
     private final String mimeType;
@@ -42,11 +48,18 @@ public enum ThumbFormat {
         this.extension = extension;
     }
 
+    /**
+     * Return the <a href="http://en.wikipedia.org/wiki/Internet_media_type">MIME Type</a>
+     * of this image format.
+     */
     public String getMimeType() {
         return mimeType;
     }
-
-    public String getExtension() {
+    
+    /**
+     * Return the default file extension of this image format.
+     */
+    public String getDefaultExtension() {
         return extension;
     }
     

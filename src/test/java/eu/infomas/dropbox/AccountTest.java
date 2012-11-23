@@ -2,7 +2,7 @@ package eu.infomas.dropbox;
 
 import java.io.IOException;
 import java.util.Map;
-import net.minidev.json.JSONValue;
+import static eu.infomas.dropbox.Utils.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -20,8 +20,8 @@ public final class AccountTest {
     }
 
     @Test
-    public void test() {
-        Map map = (Map) JSONValue.parse(JSON);
+    public void test() throws IOException {
+        Map map = parseJson(JSON, Map.class);
         Account account = Account.valueOf(map);
 
         assertEquals(174L, account.getUid());

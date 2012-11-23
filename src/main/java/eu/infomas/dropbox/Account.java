@@ -62,13 +62,13 @@ public final class Account implements Serializable {
     private Account(Map<String, Object> jsonMap) {
         country = asString(jsonMap, "country");
         displayName = asString(jsonMap, "display_name");
-        uid = asNumber(jsonMap, "uid").longValue();
+        uid = asLong(jsonMap, "uid");
         referralLink = asString(jsonMap, "referral_link");
         
         final Map quotamap = (Map<String, Object>) jsonMap.get("quota_info");
-        quota = asNumber(quotamap, "quota").longValue();
-        quotaNormal = asNumber(quotamap, "normal").longValue();
-        quotaShared = asNumber(quotamap, "shared").longValue();
+        quota = asLong(quotamap, "quota");
+        quotaNormal = asLong(quotamap, "normal");
+        quotaShared = asLong(quotamap, "shared");
     }
     
     static Account valueOf(final Map<String, Object> jsonMap) {

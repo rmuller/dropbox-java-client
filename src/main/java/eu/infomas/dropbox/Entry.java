@@ -99,7 +99,7 @@ public final class Entry implements Serializable {
      * </pre>
      */
     private Entry(final Map<String, Object> jsonMap) {
-        bytes = asNumber(jsonMap, "bytes").longValue();
+        bytes = asLong(jsonMap, "bytes");
         hash = asString(jsonMap, "hash");
         icon = asString(jsonMap, "icon");
         isDir = asBoolean(jsonMap, "is_dir");
@@ -110,7 +110,7 @@ public final class Entry implements Serializable {
         size = asString(jsonMap, "size");
         mimeType = asString(jsonMap, "mime_type");
         rev = asString(jsonMap, "rev");
-        revision = asNumber(jsonMap, "revision").longValue();
+        revision = asLong(jsonMap, "revision");
         thumbExists = asBoolean(jsonMap, "thumb_exists");
         isDeleted = asBoolean(jsonMap, "is_deleted");
 
@@ -218,6 +218,8 @@ public final class Entry implements Serializable {
 
     /**
      * Return revision number.
+     * 
+     * @deprecated Use {@link #getRev() instread}
      */
     public long getRevision() {
         return revision;

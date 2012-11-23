@@ -44,11 +44,11 @@ public final class SimpleRestClient extends RestClient {
     private static final Logger LOG = Logger.getLogger(SimpleRestClient.class.getName());
 
     @Override
-    public void toOutputStream(final Request request, final OutputStream responseStream) 
+    public long toOutputStream(final Request request, final OutputStream responseStream) 
         throws IOException {
         
         final HttpURLConnection c  = execute(request);
-        Utils.copyStream(c.getInputStream(), responseStream);
+        return Utils.copyStream(c.getInputStream(), responseStream);
     }
     
     @Override
