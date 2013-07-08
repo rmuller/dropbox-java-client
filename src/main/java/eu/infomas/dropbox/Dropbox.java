@@ -21,24 +21,24 @@
  */
 package eu.infomas.dropbox;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.logging.Logger;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import static eu.infomas.dropbox.Utils.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static eu.infomas.dropbox.Utils.*;
 
 /**
  * {@code DropBox} offers an easy to use interface for working with the 
@@ -706,23 +706,34 @@ public final class Dropbox {
          * Maximum file size limit is 150 MB.
          */
         @Override
+        @SuppressWarnings({"unchecked"})
         public Entry fromInputStream(final InputStream is, final long length) 
             throws IOException {
-            
-            String uploadId = ""; // at first PUT, this should be empty
+
+            // https://www.dropbox.com/developers/core/docs#chunked-upload
+            final ChunkedInputStream chunked = new ChunkedInputStream((is), chunkSize);
+            String uploadId = null; // at first PUT, uploadId should not be included
             long offset = 0;
-            do {
+            while (chunked.nextChunk()) {
                 // response holds JSON String with "upload_id", "offset" and "expires"
                 final String response = dropbox.request("PUT", CONTENT_SERVER, "/chunked_upload")
                     .withHeader("Authorization", dropbox.authorization)
                     .withParameter("upload_id", uploadId)
                     .withParameter("offset", offset)
-                    .withPayload(is)
+                    .withPayload(chunked)
                     .asString(dropbox.restClient);
                 final Map<String, Object> json = parseJson(response, Map.class);
                 uploadId = asString(json, "upload_id");
                 offset = asLong(json, "offset");
-            } while (true);
+            }
+            // ChunkedInputStream handles close() itself
+            // https://www.dropbox.com/developers/core/docs#commit-chunked-upload
+            final String response = dropbox.request("POST", CONTENT_SERVER, 
+                "/commit_chunked_upload/sandbox" + (path.startsWith("/") ? path : "/" + path))
+                .withHeader("Authorization", dropbox.authorization)
+                .withParameter("upload_id", uploadId)
+                .asString(dropbox.restClient);
+            return Entry.valueOf(parseJson(response, Map.class));
         }
         
     }
@@ -730,7 +741,7 @@ public final class Dropbox {
      * Uploads large files to Dropbox in multiple chunks. 
      * Also has the ability to resume if the upload is interrupted. This allows for 
      * uploads larger than the {@code /files_put} maximum of 150 MB.
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#chunked-upload">/chunked_upload</a> 
      * service. See the official API Documentation for more information.
