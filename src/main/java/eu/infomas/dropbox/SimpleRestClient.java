@@ -1,17 +1,17 @@
 /* SimpleRestClient.java
- * 
- * Created: Oct 01, 2012
+ *
+ * Created: 2012-10-01 (Year-Month-Day)
  * Character encoding: UTF-8
- * 
- ********************************* LICENSE **********************************************
- * 
- * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
- * 
+ *
+ ****************************************** LICENSE *******************************************
+ *
+ * Copyright (c) 2012 - 2013 XIAM Solutions B.V. (http://www.xiam.nl)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,7 +77,7 @@ public final class SimpleRestClient extends RestClient {
         }
         LOG.log(Level.FINER, "Request:\n    {0} {1}\n    headers: {2}\n    payload: {3}", 
             new Object[]{request.getMethod(), url, request.getHeaders(), 
-            requestStream != null});
+                requestStream != null});
         
         int responseCode = c.getResponseCode();
         if (responseCode != 200 && responseCode != 206) {

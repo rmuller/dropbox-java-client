@@ -1,4 +1,5 @@
-/*
+/* SUPPRESS CHECKSTYLE RegexpHeader
+ *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +22,13 @@
  */
 package eu.infomas.dropbox;
 
-import java.util.List;
-import static eu.infomas.dropbox.Utils.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
+import static eu.infomas.dropbox.Utils.*;
 
 /**
  * A page of {@link DeltaEntry}s, returned by {@link Dropbox#delta(java.lang.String)}.
@@ -34,7 +37,9 @@ import java.util.Map;
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
  * @since infomas-asl 3.0.2
  */
-public final class DeltaPage {
+public final class DeltaPage implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final String cursor;
     private final boolean reset;
@@ -62,10 +67,9 @@ public final class DeltaPage {
     }
 
     /**
-     * If
-     * <code>true</code>, then you should reset your local state to be an empty folder
-     * before processing the list of delta entries. This is only
-     * <code>true</code> in rare situations.
+     * If <code>true</code>, then you should reset your local state to be an empty folder
+     * before processing the list of delta entries. This is only <code>true</code> in 
+     * rare situations.
      */
     public boolean isReset() {
         return reset;
@@ -88,4 +92,5 @@ public final class DeltaPage {
     public boolean hasMore() {
         return hasMore;
     }
+    
 }

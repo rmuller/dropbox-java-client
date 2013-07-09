@@ -1,17 +1,17 @@
 /* Credentials.java
- * 
- * Created: Oct 01, 2012
+ *
+ * Created: 2012-10-01 (Year-Month-Day)
  * Character encoding: UTF-8
- * 
- ********************************* LICENSE **********************************************
- * 
- * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
- * 
+ *
+ ****************************************** LICENSE *******************************************
+ *
+ * Copyright (c) 2012 - 2013 XIAM Solutions B.V. (http://www.xiam.nl)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,8 @@ import java.io.Serializable;
  * @since infomas-asl 3.0.2
  */
 public final class Credentials implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
 
     private final String key;
     private final String secret;
@@ -44,9 +46,9 @@ public final class Credentials implements Serializable {
     }
 
     /**
-     * Create a new {@code Credentials} object. If both 'key' and 'secret' are
-     * {@code null}, {@code null} is returned. Otherwise both 'key' and 'secret' must be
-     * non-{@code null} and non-empty Strings.
+     * Factory method. Create a new {@code Credentials} object. 
+     * If both 'key' and 'secret' are {@code null}, {@code null} is returned. 
+     * Otherwise both 'key' and 'secret' must be non-{@code null} and non-empty Strings.
      *
      * @throws IllegalArgumentException if key or secret is {@code null} or empty.
      */
@@ -58,14 +60,14 @@ public final class Credentials implements Serializable {
     }
 
     /**
-     * Return the key (identifier) of this {@code Credentials}
+     * Return the key (identifier) of this {@code Credentials}.
      */
     public String getKey() {
         return key;
     }
 
     /**
-     * Return the secret token of this {@code Credentials}
+     * Return the secret token of this {@code Credentials}.
      */
     public String getSecret() {
         return secret;
@@ -92,4 +94,5 @@ public final class Credentials implements Serializable {
     public String toString() {
         return "Credentials[key=" + key + ", secret=" + secret + ']';
     }
+    
 }

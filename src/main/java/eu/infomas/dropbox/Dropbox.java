@@ -1,17 +1,17 @@
 /* DropBox.java
- * 
- * Created: Oct 01, 2012
+ *
+ * Created: 2012-10-01 (Year-Month-Day)
  * Character encoding: UTF-8
- * 
- ********************************* LICENSE **********************************************
- * 
- * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
- * 
+ *
+ ****************************************** LICENSE *******************************************
+ *
+ * Copyright (c) 2012 - 2013 XIAM Solutions B.V. (http://www.xiam.nl)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,7 +24,6 @@ package eu.infomas.dropbox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,27 +33,26 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static eu.infomas.dropbox.Utils.*;
 
 /**
- * {@code DropBox} offers an easy to use interface for working with the 
+ * {@code DropBox} offers an easy-to-use "fluent" interface for working with the 
  * <a href="https://www.dropbox.com/developers/reference/api">Dropbox REST API v1</a>.
- * All operations (REST Requests) are done via this API.
- * <br/>
+ * All operations (REST Requests) are done via this facade API.
+ * <p>
  * Dropbox does use <a href="http://tools.ietf.org/html/rfc5849">the OAuth 1.0
  * Protocol</a> which is also supported by this class.
- * <br/>
- * Note that this class is <b>not</b> thread-safe!
+ * <p>
+ * The actual HTTP communication is delegated to a {@link RestClient} implementation, which 
+ * can easily use a different implementation than the default provided by using the
+ * Java {@link java.util.ServiceLoader service-provider loading facility}.
+ * <p>
+ * <b>NOTE</b> that this class is <b>not</b> thread-safe!
  * {@code Dropbox} instances are cheap to create, so do not cache these instances,
  * just create a new instance when needed, use it and throw it away!
- * <br/>
- * The actual HTTP communication is delegated to {@link RestClient}, which can easily
- * use a different implementation than the default provided by using the
- * Java {@link ServiceLoader service-provider loading facility}.
  * 
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
  * @since infomas-asl 3.0.2
@@ -155,7 +153,7 @@ public final class Dropbox {
             Credentials.of(
                 configuration.getProperty(TOKEN_CREDENTIALS_KEY),
                 configuration.getProperty(TOKEN_CREDENTIALS_SECRET))
-            );
+        );
         if (configuration.containsKey(LANGUAGE_KEY)) {
             this.locale = new Locale(configuration.getProperty(LANGUAGE_KEY));
         }
@@ -279,10 +277,11 @@ public final class Dropbox {
 
     /**
      * Retrieves information about the user's account.
-     * <br/>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#account-info">/account/info</a> 
-     * service. See the official API Documentation for more information.
+     * <p>
+     * This method wraps the <a 
+     * href="https://www.dropbox.com/developers/reference/api#account-info">
+     * /account/info</a> service. 
+     * See the official API Documentation for more information.
      */ 
     public Account accountInfo() 
         throws IOException {
@@ -369,11 +368,11 @@ public final class Dropbox {
     
     /**
      * Download a file.
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#files-GET">/files (GET)</a> 
      * service. See the official API Documentation for more information.
-     * <br/>
+     * <p>
      * Example Usage:
      * <pre>
      * dropbox.filesGet("path")
@@ -396,7 +395,7 @@ public final class Dropbox {
         private boolean overwrite;
         private String parentRev = "";
 
-        private FilesPut(final Dropbox dropbox, final String path) {
+        FilesPut(final Dropbox dropbox, final String path) {
             super(dropbox, path);
         }
                 
@@ -409,6 +408,13 @@ public final class Dropbox {
             this.parentRev = parentRev;
             return this;
         }
+
+        /**
+         * Used by subclasses.
+         */
+        String getParentRev() {
+            return parentRev;
+        }
         
         /**
          * Specify that an already existing file can be overwritten (overwrite).
@@ -417,6 +423,13 @@ public final class Dropbox {
         public FilesPut withOverwrite() {
             this.overwrite = true;
             return this;
+        }
+        
+        /**
+         * Used by subclasses.
+         */
+        boolean isOverwrite() {
+            return overwrite;
         }
         
         /**
@@ -451,11 +464,11 @@ public final class Dropbox {
     
     /**
      * Uploads a file using PUT semantics. 
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#files_put">/files_put</a> 
      * service. See the official API Documentation for more information.
-     * <br/>
+     * <p>
      * Note that this API does not support the {@code files-POST} service.
      * Maximum file size limit is 150 MB.
      * 
@@ -557,7 +570,7 @@ public final class Dropbox {
     
     /**
      * Retrieves file and folder metadata.
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#metadata">/metadata</a> 
      * service. See the official API Documentation for more information.
@@ -572,7 +585,7 @@ public final class Dropbox {
     /**
      * Return a list of "delta entries", which are instructions on how to update your 
      * local state to match the server's state.
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#delta">/delta</a> 
      * service. See the official API Documentation for more information.
@@ -594,7 +607,7 @@ public final class Dropbox {
     
     /**
      * Obtains metadata for the previous revisions of a file.
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#revisions">/revisions</a> 
      * service. See the official API Documentation for more information.
@@ -632,15 +645,15 @@ public final class Dropbox {
      * Similar to {@code /shares}. The difference is that this bypasses the Dropbox 
      * webserver, used to provide a preview of the file, so that you can effectively 
      * stream the contents of your media.
-     * <br/>
+     * <p>
      * Sample of returned message (JSON):
      * <pre>
      * {
-     *    "url": "https://dl.dropbox.com/0/view/2j3mng7pmdqinf9/Apps/INFOMAS/digipub/499.038.jpg", 
+     *    "url": "https://dl.dropbox.com/0/view/2j3mng7pmdqinf9/Apps/INFOMAS/digipub.jpg", 
      *    "expires": "Sat, 29 Sep 2012 19:16:20 +0000"
      * }
      * </pre>
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#media">/media</a> 
      * service. See the official API Documentation for more information.
@@ -657,12 +670,12 @@ public final class Dropbox {
     /**
      * Gets a thumbnail for an image.
      * Default is a JPEG image of 64x64 pixels.
-     * <br/>
+     * <p>
      * This method currently supports files with the following file extensions: 
      * "jpg", "jpeg", "png", "tiff", "tif", "gif", and "bmp" (case insensitive). 
      * Magic numbers are not used, so use proper file names!
      * Photos that are larger than 20MB in size will not be converted to a thumbnail.
-     * <br/>
+     * <p>
      * This method wraps the 
      * <a href="https://www.dropbox.com/developers/reference/api#thumbnails">/thumbnails</a> 
      * service. See the official API Documentation for more information.
@@ -677,6 +690,9 @@ public final class Dropbox {
             .toOutputStream(restClient, out);
     }
     
+    /**
+     * Builder for the {@link #chunkedUpload(java.lang.String)} service.
+     */    
     // http://stackoverflow.com/questions/5346726/java-inheritance-using-builder-pattern
     public static final class ChunkedFilesPut extends FilesPut {
         
@@ -706,17 +722,18 @@ public final class Dropbox {
          * Maximum file size limit is 150 MB.
          */
         @Override
-        @SuppressWarnings({"unchecked"})
+        @SuppressWarnings("unchecked")
         public Entry fromInputStream(final InputStream is, final long length) 
             throws IOException {
 
             // https://www.dropbox.com/developers/core/docs#chunked-upload
-            final ChunkedInputStream chunked = new ChunkedInputStream((is), chunkSize);
+            final ChunkedInputStream chunked = new ChunkedInputStream(is, chunkSize);
             String uploadId = null; // at first PUT, uploadId should not be included
             long offset = 0;
             while (chunked.nextChunk()) {
                 // response holds JSON String with "upload_id", "offset" and "expires"
-                final String response = dropbox.request("PUT", CONTENT_SERVER, "/chunked_upload")
+                final String response = dropbox
+                    .request("PUT", CONTENT_SERVER, "/chunked_upload")
                     .withHeader("Authorization", dropbox.authorization)
                     .withParameter("upload_id", uploadId)
                     .withParameter("offset", offset)
@@ -732,6 +749,8 @@ public final class Dropbox {
                 "/commit_chunked_upload/sandbox" + (path.startsWith("/") ? path : "/" + path))
                 .withHeader("Authorization", dropbox.authorization)
                 .withParameter("upload_id", uploadId)
+                .withParameter("parent_rev", getParentRev())
+                .withParameter("overwrite", isOverwrite())
                 .asString(dropbox.restClient);
             return Entry.valueOf(parseJson(response, Map.class));
         }
@@ -742,9 +761,10 @@ public final class Dropbox {
      * Also has the ability to resume if the upload is interrupted. This allows for 
      * uploads larger than the {@code /files_put} maximum of 150 MB.
      * <p>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#chunked-upload">/chunked_upload</a> 
-     * service. See the official API Documentation for more information.
+     * This method wraps the <a 
+     * href="https://www.dropbox.com/developers/reference/api#chunked-upload">
+     * /chunked_upload</a> service. 
+     * See the official API Documentation for more information.
      */
     public ChunkedFilesPut chunkedUpload(final String path) throws IOException {
         
@@ -755,10 +775,11 @@ public final class Dropbox {
     
     /**
      * Copies a file or folder to a new location.
-     * <br/>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#fileops-copy">/fileops/copy</a> 
-     * service. See the official API Documentation for more information.
+     * <p>
+     * This method wraps the <a 
+     * href="https://www.dropbox.com/developers/reference/api#fileops-copy">
+     * /fileops/copy</a> service. 
+     * See the official API Documentation for more information.
      * 
      * @return The metadata of the file
      */    
@@ -768,10 +789,11 @@ public final class Dropbox {
     
     /**
      * Creates a folder.
-     * <br/>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#fileops-create-folder">/fileops/create_folder</a> 
-     * service. See the official API Documentation for more information.
+     * <p>
+     * This method wraps the <a 
+     * href="https://www.dropbox.com/developers/reference/api#fileops-create-folder">
+     * /fileops/create_folder</a> service. 
+     * See the official API Documentation for more information.
      * 
      * @return The metadata of the file
      */     
@@ -786,9 +808,10 @@ public final class Dropbox {
      * 404 Not Found
      * {"error": "Path '/testtest' not found"}
      * </pre>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#fileops-delete">/fileops/delete</a> 
-     * service. See the official API Documentation for more information.
+     * This method wraps the <a 
+     * href="https://www.dropbox.com/developers/reference/api#fileops-delete">
+     * /fileops/delete</a> service. 
+     * See the official API Documentation for more information.
      * 
      * @return The metadata of the file
      */   
@@ -798,10 +821,11 @@ public final class Dropbox {
     
     /**
      * Moves a file or folder to a new location.
-     * <br/>
-     * This method wraps the 
-     * <a href="https://www.dropbox.com/developers/reference/api#fileops-move">/fileops/move</a> 
-     * service. See the official API Documentation for more information.
+     * <p>
+     * This method wraps the <a 
+     * href="https://www.dropbox.com/developers/reference/api#fileops-move">
+     * /fileops/move</a> service. 
+     * See the official API Documentation for more information.
      * 
      * @return The metadata of the file
      */ 
@@ -814,7 +838,7 @@ public final class Dropbox {
     /**
      * Base class used by the "request builders".
      */
-    private static abstract class AbstractBuilder {
+    private abstract static class AbstractBuilder {
         protected final Dropbox dropbox;
         protected final String path;
 
@@ -847,7 +871,9 @@ public final class Dropbox {
     /**
      * Utility method, returning an {@link Request} preconfigured for the Dropbox API.
      */
-    private Request.Builder request(final String method, final String host, final String path) {
+    private Request.Builder request(final String method, final String host, 
+        final String path) {
+        
         return Request.withMethod(method)
             .withHost(host)
             .withPath("/" + API_VERSION + path)

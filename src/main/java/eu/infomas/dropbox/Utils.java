@@ -1,17 +1,17 @@
 /* Utils.java
- * 
- * Created: Oct 01, 2012
+ *
+ * Created: 2012-10-01 (Year-Month-Day)
  * Character encoding: UTF-8
- * 
- ********************************* LICENSE **********************************************
- * 
- * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
- * 
+ *
+ ****************************************** LICENSE *******************************************
+ *
+ * Copyright (c) 2012 - 2013 XIAM Solutions B.V. (http://www.xiam.nl)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.noggit.ObjectBuilder;
 
 /**
@@ -307,7 +308,7 @@ final class Utils {
     }
         
     private static IllegalArgumentException illegalArgumentException(final String key, 
-        final Object value, final Class expectedType) {
+        final Object value, final Class<?> expectedType) {
         
         return new IllegalArgumentException("'" + key + "' is not a " + 
             expectedType.getName() + " type . Value = " + value + 

@@ -1,4 +1,5 @@
-/*
+/* SUPPRESS CHECKSTYLE RegexpHeader
+ * 
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,6 +24,7 @@ package eu.infomas.dropbox;
 
 import java.io.Serializable;
 import java.util.Map;
+
 import static eu.infomas.dropbox.Utils.*;
 
 /**

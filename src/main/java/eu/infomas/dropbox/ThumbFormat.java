@@ -1,4 +1,5 @@
-/*
+/* SUPPRESS CHECKSTYLE RegexpHeader
+ *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +23,7 @@
 package eu.infomas.dropbox;
 
 /**
- * Represents the image format of thumb nails that the API can return.
+ * Represents the image format of thumbnails that the API can return.
  * 
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)

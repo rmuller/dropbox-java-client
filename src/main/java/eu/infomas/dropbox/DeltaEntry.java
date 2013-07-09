@@ -1,4 +1,5 @@
-/*
+/* SUPPRESS CHECKSTYLE RegexpHeader
+ *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,6 +22,7 @@
  */
 package eu.infomas.dropbox;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,9 @@ import java.util.Map;
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
  * @since infomas-asl 3.0.2
  */
-public final class DeltaEntry {
+public final class DeltaEntry implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final String lcPath;
     private final Entry metadata;
@@ -46,7 +50,7 @@ public final class DeltaEntry {
      * Dropbox compares file paths in a case-insensitive manner. For example, 
      * an entry for <code>"/readme.txt"</code> should overwrite the entry for
      * <code>"/ReadMe.TXT"</code>.
-     * <br/>
+     * <p>
      * To get the original case-preserved path, look in the {@link #metadata metadata}
      * field.
      */
@@ -60,7 +64,7 @@ public final class DeltaEntry {
      * the file system. To update your local state to match, delete whatever is at that
      * path, including any children. If your local state doesn't have anything at this
      * path, ignore this entry.
-     * <br/>
+     * <p>
      * If this is not <code>null</code>, it means that Dropbox has a file/folder at this 
      * path with the given metadata. To update your local state to match, add the entry 
      * to your local state as well.
@@ -78,4 +82,5 @@ public final class DeltaEntry {
     public Entry getMetadata() {
         return metadata;
     }
+    
 }

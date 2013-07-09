@@ -1,4 +1,5 @@
-/*
+/* SUPPRESS CHECKSTYLE RegexpHeader
+ *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +22,17 @@
  */
 package eu.infomas.dropbox;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import static eu.infomas.dropbox.Utils.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static eu.infomas.dropbox.Utils.*;
 
 /**
- * {@code Entry} describes the metadata of a Dropbox file or folder. It is just a simple
+ * {@code Entry} describes the meta data of a Dropbox file or folder. It is just a simple
  * POJO, offering a type safe interface to the JSON response returned by the Dropbox REST
  * API.
  * 
@@ -58,10 +60,41 @@ public final class Entry implements Serializable {
     private final boolean isDeleted;
     private final List<Entry> contents;
 
+    private Entry(final Map<String, Object> jsonMap) {
+        bytes = asLong(jsonMap, "bytes");
+        hash = asString(jsonMap, "hash");
+        icon = asString(jsonMap, "icon");
+        isDir = asBoolean(jsonMap, "is_dir");
+        modified = asDate(jsonMap, "modified");
+        clientMtime = asString(jsonMap, "client_mtime");
+        path = asString(jsonMap, "path");
+        root = asString(jsonMap, "root");
+        size = asString(jsonMap, "size");
+        mimeType = asString(jsonMap, "mime_type");
+        rev = asString(jsonMap, "rev");
+        revision = asLong(jsonMap, "revision");
+        thumbExists = asBoolean(jsonMap, "thumb_exists");
+        isDeleted = asBoolean(jsonMap, "is_deleted");
+
+        final List<Map<String, Object>> array = 
+            (List<Map<String, Object>>)jsonMap.get("contents");
+        if (array != null) {
+            final List<Entry> tmp = new ArrayList<Entry>(array.size());
+            for (final Map<String, Object> element : array) {
+                tmp.add(new Entry(element));
+            }
+            contents = Collections.unmodifiableList(tmp);
+        } else {
+            contents = Collections.emptyList();
+        }
+    }
+    
     /**
-     * Creates an entry from a map.
+     * Factory method. Create a new {@code Entry} object from the supplied JSON data
+     * provided as {@link Map}.
+     * <p>
      * Only called by {@link Dropbox}.
-     *
+     * 
      * @param jsonMap the map representation of the JSON received from the metadata call,
      * which should look like this:
      * <pre>
@@ -98,34 +131,6 @@ public final class Entry implements Serializable {
      * }
      * </pre>
      */
-    private Entry(final Map<String, Object> jsonMap) {
-        bytes = asLong(jsonMap, "bytes");
-        hash = asString(jsonMap, "hash");
-        icon = asString(jsonMap, "icon");
-        isDir = asBoolean(jsonMap, "is_dir");
-        modified = asDate(jsonMap, "modified");
-        clientMtime = asString(jsonMap, "client_mtime");
-        path = asString(jsonMap, "path");
-        root = asString(jsonMap, "root");
-        size = asString(jsonMap, "size");
-        mimeType = asString(jsonMap, "mime_type");
-        rev = asString(jsonMap, "rev");
-        revision = asLong(jsonMap, "revision");
-        thumbExists = asBoolean(jsonMap, "thumb_exists");
-        isDeleted = asBoolean(jsonMap, "is_deleted");
-
-        final List<Map> array = (List<Map>)jsonMap.get("contents");
-        if (array != null) {
-            final List<Entry> tmp = new ArrayList<Entry>(array.size());
-            for (final Map element : array) {
-                tmp.add(new Entry(element));
-            }
-            contents = Collections.unmodifiableList(tmp);
-        } else {
-            contents = Collections.emptyList();
-        }
-    }
-    
     static Entry valueOf(final Map<String, Object> jsonMap) {
         return jsonMap == null ? null : new Entry(jsonMap);
     }
@@ -173,7 +178,7 @@ public final class Entry implements Serializable {
      * to Dropbox. Since this time is not verified (the Dropbox server stores whatever the
      * client sends up) this should only be used for display purposes (such as sorting)
      * and not, for example, to determine if a file has changed or not.
-     * <br/>
+     * <p>
      * NOTE: This value is <b>not</b> set for folders.
      */
     public String getClientMtime() {
@@ -221,6 +226,7 @@ public final class Entry implements Serializable {
      * 
      * @deprecated Use {@link #getRev() instread}
      */
+    @Deprecated
     public long getRevision() {
         return revision;
     }
@@ -252,7 +258,7 @@ public final class Entry implements Serializable {
      * path).
      */
     public String fileName() {
-        int index = path.lastIndexOf('/');
+        final int index = path.lastIndexOf('/');
         return path.substring(index + 1, path.length());
     }
 
@@ -263,13 +269,15 @@ public final class Entry implements Serializable {
         if (path.equals("/")) {
             return "";
         } else {
-            int index = path.lastIndexOf('/');
+            final int index = path.lastIndexOf('/');
             return path.substring(0, index + 1);
         }
     }
 
     /**
-     * Return a human String with all data hold by this instance. Only for debugging.
+     * Return a human String with all data hold by this instance. 
+     * <p>
+     * Only for debugging.
      */
     @Override
     public String toString() {
@@ -280,4 +288,5 @@ public final class Entry implements Serializable {
             ", isDeleted=" + isDeleted + 
             ", contents.size=" + (contents == null ? "null" : contents.size()) + '}';
     }
+    
 }

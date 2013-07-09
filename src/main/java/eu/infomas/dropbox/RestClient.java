@@ -1,17 +1,17 @@
 /* RestClient.java
- * 
- * Created: Oct 01, 2012
+ *
+ * Created: 2012-10-01 (Year-Month-Day)
  * Character encoding: UTF-8
- * 
- ********************************* LICENSE **********************************************
- * 
- * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
- * 
+ *
+ ****************************************** LICENSE *******************************************
+ *
+ * Copyright (c) 2012 - 2013 XIAM Solutions B.V. (http://www.xiam.nl)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,11 +32,11 @@ import java.util.logging.Logger;
  * {@code RestClient} defines the interface for a simple HTTP(S) REST client, used by
  * {@link Dropbox} and {@link Request}. 
  * It is <b>not</b> a general purpose REST Client!
- * <br/>
+ * <p>
  * Functionality is very simple and "just enough" for getting {@link Dropbox} working. 
  * Actual implementations must extend this class and are discovered via the standard Java
  * {@link ServiceLoader service-provider loading} facility.
- * <br/>
+ * <p>
  * Note that this type is part of the low-level API. In most uses cases you do not need 
  * this class (interfacing is done via {@link Dropbox} API).
  *
@@ -53,7 +53,7 @@ public abstract class RestClient {
      * implementation is found, {@link SimpleRestClient} is used. If several
      * implementations are available, the first found on the class path is used and a
      * warning is logged. 
-     * <br/>
+     * <p>
      * Note that this factory method always returns a newly created instance.
      */
     public static RestClient newInstance() {
@@ -94,7 +94,7 @@ public abstract class RestClient {
      * 
      * @return The bytes written to the output stream
      */    
-    public abstract long toOutputStream(final Request request, final OutputStream responseStream)
-        throws IOException;
+    public abstract long toOutputStream(final Request request, 
+        final OutputStream responseStream) throws IOException;
     
 }

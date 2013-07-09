@@ -1,17 +1,17 @@
 /* Request.java
  *
- * Created: Oct 01, 2012
+ * Created: 2012-10-01 (Year-Month-Day)
  * Character encoding: UTF-8
- * 
- ********************************* LICENSE **********************************************
- * 
- * Copyright (c) 2012 - XIAM Solutions B.V. (http://www.xiam.nl)
- * 
+ *
+ ****************************************** LICENSE *******************************************
+ *
+ * Copyright (c) 2012 - 2013 XIAM Solutions B.V. (http://www.xiam.nl)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,29 +22,29 @@
 package eu.infomas.dropbox;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import static eu.infomas.dropbox.Utils.UTF8;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Collection;
 
 /**
  * {@code Request} holds all data for a HTTP(S) REST Request. A Builder is used for
  * creating new {@code Request} instances. The actual HTTP(S) Request is delegated 
  * to a {@link RestClient} implementation.
- * <br/>
+ * <p>
  * Note that this type is part of the low-level API. In most uses cases you do not need 
  * this class (interfacing is done via {@link Dropbox} API).
- * <br/>
+ * <p>
  * Example usage:
  * <pre>
  * // Write the Account information (as JSON String) to a file
@@ -92,7 +92,7 @@ public final class Request {
         /**
          * Specify the scheme (protocol) of the request. This value is optional. If not
          * specified, {@code https} is assumed. {@link MalformedURLException}.
-         * <br/>
+         * <p>
          * Only "http" and "https" are allowed values.
          */
         public Builder withSchema(final String scheme) {
@@ -274,8 +274,10 @@ public final class Request {
     }
 
     /**
-     * Return human readable String. Used for debugging.
-     * Returns "{METHOD} {URL}"
+     * Return human readable String.
+     * Returns "{METHOD} {URL}".
+     * <p>
+     * Only used for debugging.
      */
     @Override
     public String toString() {
@@ -304,7 +306,9 @@ public final class Request {
             if (sb.length() > 1) {
                 sb.append('&');
             }
-            sb.append(encodeRfc3986(pair.getKey())).append('=').append(encodeRfc3986(pair.getValue()));
+            sb.append(encodeRfc3986(pair.getKey()))
+                .append('=')
+                .append(encodeRfc3986(pair.getValue()));
         }
         return sb.toString();
     }
@@ -325,4 +329,5 @@ public final class Request {
             throw new AssertionError(ex);
         }
     }
+    
 }

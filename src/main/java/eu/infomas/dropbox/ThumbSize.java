@@ -1,4 +1,5 @@
-/*
+/* SUPPRESS CHECKSTYLE RegexpHeader
+ *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +23,7 @@
 package eu.infomas.dropbox;
 
 /**
- * Represents the size of thumb nails that the API can return.
+ * Represents the size of thumbnails that the API can return.
  * 
  * @author Original Author is Dropbox
  * @since infomas-asl 3.0.2
@@ -56,22 +57,22 @@ public enum ThumbSize {
     BESTFIT_320x240("320x240_bestfit"),
     
     /**
-     * Fits within 480x320 or 320x480
+     * Fits within 480x320 or 320x480.
      */
     BESTFIT_480x320("480x320_bestfit"),
     
     /**
-     * Fits within 640x480 or 480x640
+     * Fits within 640x480 or 480x640.
      */
     BESTFIT_640x480("640x480_bestfit"),
     
     /**
-     * Fits within 960x640 or 640x960
+     * Fits within 960x640 or 640x960.
      */
     BESTFIT_960x640("960x640_bestfit"),
     
     /**
-     * Fits within 1024x768 or 768x1024
+     * Fits within 1024x768 or 768x1024.
      */
     BESTFIT_1024x768("1024x768_bestfit");
     
