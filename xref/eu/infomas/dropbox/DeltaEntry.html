@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>DeltaEntry xref</title>
+<link type="text/css" rel="stylesheet" href="../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../apidocs/eu/infomas/dropbox/DeltaEntry.html">View Javadoc</a></div><pre>
+
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <em class="jxr_comment">/*<em class="jxr_comment"> SUPPRESS CHECKSTYLE RegexpHeader</em></em>
+<a class="jxr_linenumber" name="2" href="#2">2</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_comment"> * Copyright (c) 2009-2011 Dropbox, Inc.</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment"> * Permission is hereby granted, free of charge, to any person obtaining a copy</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment"> * of this software and associated documentation files (the "Software"), to deal</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment"> * in the Software without restriction, including without limitation the rights</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment"> * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_comment"> * copies of the Software, and to permit persons to whom the Software is</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_comment"> * furnished to do so, subject to the following conditions:</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_comment"> * The above copyright notice and this permission notice shall be included in</em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_comment"> * all copies or substantial portions of the Software.</em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment"> * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_comment"> * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</em>
+<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment"> * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</em>
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment"> * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</em>
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment"> * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</em>
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment"> * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</em>
+<a class="jxr_linenumber" name="21" href="#21">21</a>  <em class="jxr_comment"> * SOFTWARE.</em>
+<a class="jxr_linenumber" name="22" href="#22">22</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <strong class="jxr_keyword">package</strong> eu.infomas.dropbox;
+<a class="jxr_linenumber" name="24" href="#24">24</a>  
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> java.io.Serializable;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="28" href="#28">28</a>  
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="30" href="#30">30</a>  <em class="jxr_javadoccomment"> * A single entry in a {@link DeltaPage}.</em>
+<a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="32" href="#32">32</a>  <em class="jxr_javadoccomment"> * @author Original Author is Dropbox</em>
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:rmuller@xiam.nl" target="alexandria_uri">mailto:rmuller@xiam.nl</a>"&gt;Ronald K. Muller&lt;/a&gt; (refactoring)</em>
+<a class="jxr_linenumber" name="34" href="#34">34</a>  <em class="jxr_javadoccomment"> * @since infomas-asl 3.0.2</em>
+<a class="jxr_linenumber" name="35" href="#35">35</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="36" href="#36">36</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../eu/infomas/dropbox/DeltaEntry.html">DeltaEntry</a> <strong class="jxr_keyword">implements</strong> Serializable {
+<a class="jxr_linenumber" name="37" href="#37">37</a>  
+<a class="jxr_linenumber" name="38" href="#38">38</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> serialVersionUID = 1L;
+<a class="jxr_linenumber" name="39" href="#39">39</a>  
+<a class="jxr_linenumber" name="40" href="#40">40</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String lcPath;
+<a class="jxr_linenumber" name="41" href="#41">41</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../eu/infomas/dropbox/Entry.html">Entry</a> metadata;
+<a class="jxr_linenumber" name="42" href="#42">42</a>  
+<a class="jxr_linenumber" name="43" href="#43">43</a>      <a href="../../../eu/infomas/dropbox/DeltaEntry.html">DeltaEntry</a>(<strong class="jxr_keyword">final</strong> List&lt;Object&gt; jsonList) {
+<a class="jxr_linenumber" name="44" href="#44">44</a>          <strong class="jxr_keyword">this</strong>.lcPath = (String) jsonList.get(0);
+<a class="jxr_linenumber" name="45" href="#45">45</a>          <strong class="jxr_keyword">this</strong>.metadata = Entry.valueOf((Map) jsonList.get(1));
+<a class="jxr_linenumber" name="46" href="#46">46</a>      }
+<a class="jxr_linenumber" name="47" href="#47">47</a>  
+<a class="jxr_linenumber" name="48" href="#48">48</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="49" href="#49">49</a>  <em class="jxr_javadoccomment">     * The lower-cased path of the entry. </em>
+<a class="jxr_linenumber" name="50" href="#50">50</a>  <em class="jxr_javadoccomment">     * Dropbox compares file paths in a case-insensitive manner. For example, </em>
+<a class="jxr_linenumber" name="51" href="#51">51</a>  <em class="jxr_javadoccomment">     * an entry for &lt;code&gt;"/readme.txt"&lt;/code&gt; should overwrite the entry for</em>
+<a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment">     * &lt;code&gt;"/ReadMe.TXT"&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="53" href="#53">53</a>  <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="54" href="#54">54</a>  <em class="jxr_javadoccomment">     * To get the original case-preserved path, look in the {@link #metadata metadata}</em>
+<a class="jxr_linenumber" name="55" href="#55">55</a>  <em class="jxr_javadoccomment">     * field.</em>
+<a class="jxr_linenumber" name="56" href="#56">56</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="57" href="#57">57</a>      <strong class="jxr_keyword">public</strong> String getLowerCasedPath() {
+<a class="jxr_linenumber" name="58" href="#58">58</a>          <strong class="jxr_keyword">return</strong> lcPath;
+<a class="jxr_linenumber" name="59" href="#59">59</a>      }
+<a class="jxr_linenumber" name="60" href="#60">60</a>  
+<a class="jxr_linenumber" name="61" href="#61">61</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="62" href="#62">62</a>  <em class="jxr_javadoccomment">     * If this is</em>
+<a class="jxr_linenumber" name="63" href="#63">63</a>  <em class="jxr_javadoccomment">     * &lt;code&gt;null&lt;/code&gt;, it means that this path doesn't exist on on Dropbox's copy of</em>
+<a class="jxr_linenumber" name="64" href="#64">64</a>  <em class="jxr_javadoccomment">     * the file system. To update your local state to match, delete whatever is at that</em>
+<a class="jxr_linenumber" name="65" href="#65">65</a>  <em class="jxr_javadoccomment">     * path, including any children. If your local state doesn't have anything at this</em>
+<a class="jxr_linenumber" name="66" href="#66">66</a>  <em class="jxr_javadoccomment">     * path, ignore this entry.</em>
+<a class="jxr_linenumber" name="67" href="#67">67</a>  <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="68" href="#68">68</a>  <em class="jxr_javadoccomment">     * If this is not &lt;code&gt;null&lt;/code&gt;, it means that Dropbox has a file/folder at this </em>
+<a class="jxr_linenumber" name="69" href="#69">69</a>  <em class="jxr_javadoccomment">     * path with the given metadata. To update your local state to match, add the entry </em>
+<a class="jxr_linenumber" name="70" href="#70">70</a>  <em class="jxr_javadoccomment">     * to your local state as well.</em>
+<a class="jxr_linenumber" name="71" href="#71">71</a>  <em class="jxr_javadoccomment">     * &lt;ul&gt; </em>
+<a class="jxr_linenumber" name="72" href="#72">72</a>  <em class="jxr_javadoccomment">     * &lt;li&gt; If the path refers to parent folders that don't exist</em>
+<a class="jxr_linenumber" name="73" href="#73">73</a>  <em class="jxr_javadoccomment">     * yet in your local state, create those parent folders in your local state.&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="74" href="#74">74</a>  <em class="jxr_javadoccomment">     * &lt;li&gt; If the metadata is for a file, replace whatever your local state has at that</em>
+<a class="jxr_linenumber" name="75" href="#75">75</a>  <em class="jxr_javadoccomment">     * path with the new entry.&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="76" href="#76">76</a>  <em class="jxr_javadoccomment">     * &lt;li&gt; If the metadata is for a folder, check what your local state has at the path. </em>
+<a class="jxr_linenumber" name="77" href="#77">77</a>  <em class="jxr_javadoccomment">     * If it's a file, replace it with the new entry. If it's a folder, apply the new </em>
+<a class="jxr_linenumber" name="78" href="#78">78</a>  <em class="jxr_javadoccomment">     * metadata to the folder, but do not modify the folder's</em>
+<a class="jxr_linenumber" name="79" href="#79">79</a>  <em class="jxr_javadoccomment">     * children.&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="80" href="#80">80</a>  <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
+<a class="jxr_linenumber" name="81" href="#81">81</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="82" href="#82">82</a>      <strong class="jxr_keyword">public</strong> <a href="../../../eu/infomas/dropbox/Entry.html">Entry</a> getMetadata() {
+<a class="jxr_linenumber" name="83" href="#83">83</a>          <strong class="jxr_keyword">return</strong> metadata;
+<a class="jxr_linenumber" name="84" href="#84">84</a>      }
+<a class="jxr_linenumber" name="85" href="#85">85</a>      
+<a class="jxr_linenumber" name="86" href="#86">86</a>  }
+</pre>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
+</html>
+

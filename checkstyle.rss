@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<rss version="0.91">
+  <channel>
+    <title>INFOMAS ASL :: Dropbox Java Client - Checkstyle report</title>
+    <link>https://github.com/rmuller/dropbox-java-client</link>
+    <description>INFOMAS ASL :: Dropbox Java Client - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2011 - 2013 XIAM Solutions B.V.</copyright>
+    <item>
+      <title>File: 28,
+             Errors: 0,
+             Warnings: 1,
+             Infos: 0
+      </title>
+            <link>https://github.com/rmuller/dropbox-java-client/checkstyle.html</link>
+      <description>
+        <p>Click <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.Utils.java">src/main/java/eu/infomas/dropbox/Utils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.package-info.java">eu/infomas/dropbox/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.ThumbSize.java">src/main/java/eu/infomas/dropbox/ThumbSize.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.Credentials.java">src/main/java/eu/infomas/dropbox/Credentials.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.DeltaPage.java">eu/infomas/dropbox/DeltaPage.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.package-info.java">src/main/java/eu/infomas/dropbox/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.Entry.java">eu/infomas/dropbox/Entry.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.Dropbox.java">src/main/java/eu/infomas/dropbox/Dropbox.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.ThumbSize.java">eu/infomas/dropbox/ThumbSize.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.Dropbox.java">eu/infomas/dropbox/Dropbox.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.Request.java">src/main/java/eu/infomas/dropbox/Request.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.RestClient.java">src/main/java/eu/infomas/dropbox/RestClient.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.ChunkedInputStream.java">eu/infomas/dropbox/ChunkedInputStream.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.Account.java">eu/infomas/dropbox/Account.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.Request.java">eu/infomas/dropbox/Request.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.DeltaEntry.java">eu/infomas/dropbox/DeltaEntry.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.Utils.java">eu/infomas/dropbox/Utils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.Entry.java">src/main/java/eu/infomas/dropbox/Entry.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.SimpleRestClient.java">src/main/java/eu/infomas/dropbox/SimpleRestClient.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.SimpleRestClient.java">eu/infomas/dropbox/SimpleRestClient.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.DeltaPage.java">src/main/java/eu/infomas/dropbox/DeltaPage.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.ChunkedInputStream.java">src/main/java/eu/infomas/dropbox/ChunkedInputStream.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.ThumbFormat.java">eu/infomas/dropbox/ThumbFormat.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.RestClient.java">eu/infomas/dropbox/RestClient.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.ThumbFormat.java">src/main/java/eu/infomas/dropbox/ThumbFormat.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.Account.java">src/main/java/eu/infomas/dropbox/Account.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#eu.infomas.dropbox.Credentials.java">eu/infomas/dropbox/Credentials.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/rmuller/dropbox-java-client/checkstyle.html#src.main.java.eu.infomas.dropbox.DeltaEntry.java">src/main/java/eu/infomas/dropbox/DeltaEntry.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+
