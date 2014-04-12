@@ -28,14 +28,15 @@
     <parent>
         <groupId>eu.infomas</groupId>
         <artifactId>infomas-asl</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.4-SNAPSHOT</version>
     </parent>
     <artifactId>dropbox-java-client</artifactId>
     <packaging>bundle</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>INFOMAS ASL :: Dropbox Java Client</name>    
     <description>
-        An easy to use, OSGi based Java client for the Dropbox REST API v1, runs on Google App Engine.
+        An easy to use, OSGi based Java client for the Dropbox REST API v1, 
+        runs on Google App Engine.
     </description>
     <url>https://github.com/rmuller/dropbox-java-client</url>
     
@@ -90,35 +91,8 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.9.1</version>
-                <executions>
-                    <execution>
-                        <id>checkstyle-main</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <!-- https://github.com/kohanyirobert/checkstyle/blob/master/main.xml
-                            becomes: https://raw.github.com/kohanyirobert/checkstyle/master/main.xml
-                            -->
-                            <configLocation>https://raw.github.com/kohanyirobert/checkstyle/master/main.xml</configLocation>
-                            <includeTestSourceDirectory>false</includeTestSourceDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <consoleOutput>true</consoleOutput>
-                    <failsOnError>true</failsOnError>
-                    <linkXRef>false</linkXRef>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.3.7</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -127,19 +101,9 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <links>
-                        <link>http://docs.oracle.com/javase/6/docs/api/</link>
-                    </links>
-                </configuration>
-            </plugin>
-            <plugin>
                 <!-- ghSite:site -->
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
-                <version>0.7</version>
                 <configuration>
                     <message>Creating gh-pages with JavaDoc for ${project.artifactId}-${project.version}</message>
                     <!-- default is ${project.reporting.outputDirectory} == ./target/site      -->        
