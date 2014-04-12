@@ -4,24 +4,26 @@
 
 An easy to use, OSGi based Java client for the Dropbox REST API v1, runs on Google App Engine.
 
-#### Current status: Alpha
-API not (yet) stabilized. Not all REST Services (yet) implemented.
-However, the current functionality is complete and tested.
-
-TODO: https://github.com/yonik/noggit
+#### Current status: Beta
+API stabilized. Almost all REST Services implemented. In production since March 2013.
+We only need to do some cleanup and then this library will be available from 
+The Central (Maven) Repository.
 
 ## Quick Facts
-+ Easy to use, "fluent" API
++ Simple easy to use, "fluent" API
++ Very fast
++ Lightweight, one dependency (noggit JSON parser), only 36 kb jar
 + Runs on Google App Engine (GAE)
 + Language: Java 6 SE or better
-+ Tested with both Oracle JDK 6 and 7 and OpenJDK 6 and 7 (Last three VM's using [Travis CI Server](https://travis-ci.org/))
++ Tested with Oracle JDK 6, 7, 8 and OpenJDK 6 and 7 (Last four VM's using 
+  [Travis CI Server](https://travis-ci.org/))
 + Standard JUL Logging (`java.util.logging`)
-+ Build System: Maven 3
 + OSGi Bundle artifact
 + Apache License, Version 2.0
++ Build System: Maven 3
 
 #### Example Usage:
-First put `dropbox-java-client-{version}.jar` and `json-smart-1.1.1.jar` in the class path.
+First put `dropbox-java-client-{version}.jar` and `noggit-0.5.jar` in the class path.
 
 For more information, see [Javadoc](http://rmuller.github.com/dropbox-java-client/)
 
@@ -49,7 +51,7 @@ dropbox.filesGet("dropbox file path")
 
 ## License
 
-Copyright (c) 2012 XIAM Solutions B.V.
+Copyright (c) 2012 - 2014 XIAM Solutions B.V.
 
 Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
