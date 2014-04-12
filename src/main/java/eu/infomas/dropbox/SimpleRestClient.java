@@ -76,10 +76,11 @@ public final class SimpleRestClient extends RestClient {
             Utils.copyStream(requestStream, c.getOutputStream());
         }
         LOG.log(Level.FINER, "Request:\n    {0} {1}\n    headers: {2}\n    payload: {3}", 
-            new Object[]{request.getMethod(), url, request.getHeaders(), 
-                requestStream != null});
+            new Object[]{
+                request.getMethod(), url, request.getHeaders(), requestStream != null,
+            });
         
-        int responseCode = c.getResponseCode();
+        final int responseCode = c.getResponseCode();
         if (responseCode != 200 && responseCode != 206) {
             final String body = c.getErrorStream() == null ? "" : 
                 "\n" + Utils.toString(c.getErrorStream(), c.getContentEncoding());

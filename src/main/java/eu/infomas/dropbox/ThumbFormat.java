@@ -1,4 +1,4 @@
-/* SUPPRESS CHECKSTYLE RegexpHeader
+/* RegexpHeader
  *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
@@ -24,7 +24,7 @@ package eu.infomas.dropbox;
 
 /**
  * Represents the image format of thumbnails that the API can return.
- * 
+ *
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
  * @since infomas-asl 3.0.2
@@ -34,16 +34,16 @@ public enum ThumbFormat {
     /**
      * The PNG Image format.
      */
-    PNG("image/png", ".png"), 
-    
+    PNG("image/png", ".png"),
+
     /**
      * The JPEG Image format.
-     */    
+     */
     JPEG("image/jpeg", ".jpg");
-    
+
     private final String mimeType;
     private final String extension;
-    
+
     private ThumbFormat(final String mimeType, final String extension) {
         this.mimeType = mimeType;
         this.extension = extension;
@@ -56,12 +56,12 @@ public enum ThumbFormat {
     public String getMimeType() {
         return mimeType;
     }
-    
+
     /**
      * Return the default file extension of this image format.
      */
     public String getDefaultExtension() {
         return extension;
     }
-    
+
 }

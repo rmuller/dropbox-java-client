@@ -1,5 +1,9 @@
+# travis-ci (https://travis-ci.org) configuration for eu.infomas:dropbox-java-client
 language: java
 jdk:
+  - oraclejdk8
   - oraclejdk7
   - openjdk7
   - openjdk6
+# batch mode / trigger checkstyle
+script: mvn -B verify

@@ -1,4 +1,4 @@
-/* SUPPRESS CHECKSTYLE RegexpHeader
+/* RegexpHeader
  *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
@@ -29,13 +29,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static eu.infomas.dropbox.Utils.*;
+import static eu.infomas.dropbox.Utils.asBoolean;
+import static eu.infomas.dropbox.Utils.asDate;
+import static eu.infomas.dropbox.Utils.asLong;
+import static eu.infomas.dropbox.Utils.asString;
 
 /**
  * {@code Entry} describes the meta data of a Dropbox file or folder. It is just a simple
  * POJO, offering a type safe interface to the JSON response returned by the Dropbox REST
  * API.
- * 
+ *
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (refactoring)
  * @since infomas-asl 3.0.2
@@ -76,7 +79,7 @@ public final class Entry implements Serializable {
         thumbExists = asBoolean(jsonMap, "thumb_exists");
         isDeleted = asBoolean(jsonMap, "is_deleted");
 
-        final List<Map<String, Object>> array = 
+        final List<Map<String, Object>> array =
             (List<Map<String, Object>>)jsonMap.get("contents");
         if (array != null) {
             final List<Entry> tmp = new ArrayList<Entry>(array.size());
@@ -88,13 +91,13 @@ public final class Entry implements Serializable {
             contents = Collections.emptyList();
         }
     }
-    
+
     /**
      * Factory method. Create a new {@code Entry} object from the supplied JSON data
      * provided as {@link Map}.
      * <p>
      * Only called by {@link Dropbox}.
-     * 
+     *
      * @param jsonMap the map representation of the JSON received from the metadata call,
      * which should look like this:
      * <pre>
@@ -134,14 +137,14 @@ public final class Entry implements Serializable {
     static Entry valueOf(final Map<String, Object> jsonMap) {
         return jsonMap == null ? null : new Entry(jsonMap);
     }
-    
+
     /**
      * Size of the file in bytes.
      */
     public long getBytes() {
         return bytes;
     }
-    
+
     /**
      * If a directory, the hash is its "current version". If the hash changes between
      * calls, then one of the directory's immediate children has changed.
@@ -149,7 +152,7 @@ public final class Entry implements Serializable {
     public String getHash() {
         return hash;
     }
-    
+
     /**
      * Name of the icon to display for this entry. Corresponds to filenames (without an
      * extension) in the icon library available at
@@ -158,21 +161,21 @@ public final class Entry implements Serializable {
     public String getIcon() {
         return icon;
     }
-    
+
     /**
      * Returns {@code true} if this entry is a directory, or {@code false} if it's a file.
      */
     public boolean isDir() {
         return isDir;
     }
-    
+
     /**
      * Last modified date.
      */
     public Date getModified() {
         return modified;
     }
-    
+
     /**
      * For a file, this is the modification time set by the client when the file was added
      * to Dropbox. Since this time is not verified (the Dropbox server stores whatever the
@@ -184,35 +187,35 @@ public final class Entry implements Serializable {
     public String getClientMtime() {
         return clientMtime;
     }
-    
+
     /**
      * Path to the file from the root.
      */
     public String getPath() {
         return path;
     }
-    
+
     /**
      * Name of the root, usually either "dropbox" or "app_folder".
      */
     public String getRoot() {
         return root;
     }
-    
+
     /**
      * Human-readable (and localized, if possible) description of the file size.
      */
     public String getSize() {
         return size;
     }
-    
+
     /**
      * The file's MIME type.
      */
     public String getMimeType() {
         return mimeType;
     }
-    
+
     /**
      * Full unique ID for this file's revision. This is a string, and not equivalent to
      * the old revision integer.
@@ -223,21 +226,21 @@ public final class Entry implements Serializable {
 
     /**
      * Return revision number.
-     * 
+     *
      * @deprecated Use {@link #getRev() instread}
      */
     @Deprecated
     public long getRevision() {
         return revision;
     }
-    
+
     /**
      * Whether a thumbnail for this is available.
      */
     public boolean isThumbExists() {
         return thumbExists;
     }
-    
+
     /**
      * Whether this entry has been deleted but not removed from the metadata yet. Most
      * likely you'll only want to show entries with isDeleted == false.
@@ -245,7 +248,7 @@ public final class Entry implements Serializable {
     public boolean isDeleted() {
         return isDeleted;
     }
-    
+
     /**
      * A list of immediate children if this is a directory.
      */
@@ -266,7 +269,7 @@ public final class Entry implements Serializable {
      * Returns the path of the parent directory if this is a file.
      */
     public String parentPath() {
-        if (path.equals("/")) {
+        if ("/".equals(path)) {
             return "";
         } else {
             final int index = path.lastIndexOf('/');
@@ -275,7 +278,7 @@ public final class Entry implements Serializable {
     }
 
     /**
-     * Return a human String with all data hold by this instance. 
+     * Return a human String with all data hold by this instance.
      * <p>
      * Only for debugging.
      */
@@ -285,8 +288,8 @@ public final class Entry implements Serializable {
             ", isDir=" + isDir + ", modified=" + modified + ", clientMtime=" + clientMtime +
             ", path=" + path + ", root=" + root + ", size=" + size +
             ", mimeType=" + mimeType + ", rev=" + rev + ", thumbExists=" + thumbExists +
-            ", isDeleted=" + isDeleted + 
+            ", isDeleted=" + isDeleted +
             ", contents.size=" + (contents == null ? "null" : contents.size()) + '}';
     }
-    
+
 }

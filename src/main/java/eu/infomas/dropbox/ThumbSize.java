@@ -1,4 +1,4 @@
-/* SUPPRESS CHECKSTYLE RegexpHeader
+/* RegexpHeader
  *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
@@ -23,8 +23,8 @@
 package eu.infomas.dropbox;
 
 /**
- * Represents the size of thumbnails that the API can return.
- * 
+ * Represents the size of thumb nails that the API can return.
+ *
  * @author Original Author is Dropbox
  * @since infomas-asl 3.0.2
  */
@@ -34,48 +34,48 @@ public enum ThumbSize {
      * Will have at most a 32 width or 32 height, maintaining its original aspect ratio.
      */
     ICON_32x32("small"),
-    
+
     /**
      * 64 width or 64 height, with original aspect ratio.
      */
     ICON_64x64("medium"),
-    
+
     /**
      * 128 width or 128 height, with original aspect ratio.
      */
     ICON_128x128("large"),
-    
+
     /**
      * 256 width or 256 height, with original aspect ratio.
      */
     ICON_256x256("256x256"),
-    
+
     /**
      * Will either fit within a 320 x 240 rectangle or a 240 x 320 rectangle, whichever
      * results in a larger image.
      */
     BESTFIT_320x240("320x240_bestfit"),
-    
+
     /**
      * Fits within 480x320 or 320x480.
      */
     BESTFIT_480x320("480x320_bestfit"),
-    
+
     /**
      * Fits within 640x480 or 480x640.
      */
     BESTFIT_640x480("640x480_bestfit"),
-    
+
     /**
      * Fits within 960x640 or 640x960.
      */
     BESTFIT_960x640("960x640_bestfit"),
-    
+
     /**
      * Fits within 1024x768 or 768x1024.
      */
     BESTFIT_1024x768("1024x768_bestfit");
-    
+
     private final String size;
 
     private ThumbSize(final String size) {

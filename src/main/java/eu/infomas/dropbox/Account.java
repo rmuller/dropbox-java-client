@@ -1,5 +1,5 @@
-/* SUPPRESS CHECKSTYLE RegexpHeader
- * 
+/* RegexpHeader
+ *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,11 +25,12 @@ package eu.infomas.dropbox;
 import java.io.Serializable;
 import java.util.Map;
 
-import static eu.infomas.dropbox.Utils.*;
+import static eu.infomas.dropbox.Utils.asLong;
+import static eu.infomas.dropbox.Utils.asString;
 
 /**
  * Information about a user's account.
- * 
+ *
  * @author Original Author is Dropbox
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a> (small modifications)
  * @since infomas-asl 3.0.2
@@ -49,7 +50,7 @@ public final class Account implements Serializable {
     /**
      * Creates an account from a Map.
      *
-     * @param jsonMap a Map that looks like:      
+     * @param jsonMap a Map that looks like:
      * <pre>
      * {"country": "",
      *  "display_name": "John Q. User",
@@ -66,59 +67,59 @@ public final class Account implements Serializable {
         displayName = asString(jsonMap, "display_name");
         uid = asLong(jsonMap, "uid");
         referralLink = asString(jsonMap, "referral_link");
-        
-        final Map quotamap = (Map<String, Object>) jsonMap.get("quota_info");
+
+        final Map<String, Object> quotamap = (Map<String, Object>)jsonMap.get("quota_info");
         quota = asLong(quotamap, "quota");
         quotaNormal = asLong(quotamap, "normal");
         quotaShared = asLong(quotamap, "shared");
     }
-    
+
     static Account valueOf(final Map<String, Object> jsonMap) {
         return jsonMap == null ? null : new Account(jsonMap);
     }
-    
+
     /**
      * The user's ISO country code.
      */
     public String getCountry() {
         return country;
     }
-    
+
     /**
      * The user's "real" name.
      */
     public String getDisplayName() {
         return displayName;
     }
-    
+
     /**
      * The user's quota, in bytes.
      */
     public long getQuota() {
         return quota;
     }
-    
+
     /**
      * The user's quota excluding shared files.
      */
     public long getQuotaNormal() {
         return quotaNormal;
     }
-    
+
     /**
      * The user's quota of shared files.
      */
     public long getQuotaShared() {
         return quotaShared;
     }
-    
+
     /**
      * The user's account ID.
      */
     public long getUid() {
         return uid;
     }
-    
+
     /**
      * The url the user can give to get referral credit.
      */
@@ -132,11 +133,10 @@ public final class Account implements Serializable {
      */
     @Override
     public String toString() {
-        return "Account{" + "country=" + country + ", displayName=" + displayName + 
-            ", quota=" + quota + ", quotaNormal=" + quotaNormal + 
-            ", quotaShared=" + quotaShared + ", uid=" + uid + 
+        return "Account{" + "country=" + country + ", displayName=" + displayName +
+            ", quota=" + quota + ", quotaNormal=" + quotaNormal +
+            ", quotaShared=" + quotaShared + ", uid=" + uid +
             ", referralLink=" + referralLink + '}';
     }
- 
-    
+
 }

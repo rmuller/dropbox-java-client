@@ -20,28 +20,28 @@
  * limitations under the License.
  */
 /**
- * An easy to use, OSGi based Java client for the Dropbox REST API v1,  
+ * An easy to use, OSGi based Java client for the Dropbox REST API v1,
  * runs on Google App Engine.
  * <p>
- * The main class in this package is {@link eu.infomas.dropbox.Dropbox}. 
- * It offers the primary interface (facade) to the 
+ * The main class in this package is {@link eu.infomas.dropbox.Dropbox}.
+ * It offers the primary interface (facade) to the
  * <a href="https://www.dropbox.com/developers/reference/api">Dropbox REST API v1</a>.
  *
  * <h4>Why use this library?</h4>
- * Advantages of using this library instead of the 
+ * Advantages of using this library instead of the
  * <a href="https://www.dropbox.com/static/developers/dropbox-java-sdk-1.5.1-docs/index.html">
  * official implementation</a>:
  * <ul>
- * <li>Works (and tested) on Google App Engine (this was the primary reason for creating 
+ * <li>Works (and tested) on Google App Engine (this was the primary reason for creating
  * this library)</li>
  * <li>Swappable HTTP Client implementation</li>
  * <li>Smaller library, works default with {@code java.net} package</li>
  * <li>More clear (fluent) API</li>
  * <li>Artifact is OSGi compliant bundle</li>
- * <li>Faster because <a href="http://code.google.com/p/json-smart/">json-smart</a> is 
+ * <li>Faster because <a href="http://code.google.com/p/json-smart/">json-smart</a> is
  * used instead of {@code json-simple}</li>
  * </ul>
- * 
+ *
  * <h4>Example A. Get the first 8 bytes of a file.</h4>
  * Credentials are stored in a Properties file, format:
  * <pre>
@@ -50,14 +50,14 @@
  * # Application credentials are mandatory
  * dropbox.app.key={key}
  * dropbox.app.secret={secret token}
- * # Access credentials are optional. If not present the API offers operations to 
+ * # Access credentials are optional. If not present the API offers operations to
  * # query Access credentials / tokens
  * dropbox.access.key={key}
  * dropbox.access.secret={secret token}
  * # Language is optional, default is "en"
  * dropbox.language=nl
  * </pre>
- * If the configuration file ({@code .dropbox.config} is stored in your home folder we can 
+ * If the configuration file ({@code .dropbox.config} is stored in your home folder we can
  * start coding:
  * <pre>
  * final Dropbox dropbox = new Dropbox("~/.dropbox.config");
@@ -87,10 +87,10 @@
  *     .withChunkSize(8)          // use chunks of 8 MB
  *     .withOverwrite()           // replace existing file (if any)
  *     .fromFile(fileToUpload);
- * LOG.log(Level.INFO, "File uploaded: {0} ({1} bytes)", 
+ * LOG.log(Level.INFO, "File uploaded: {0} ({1} bytes)",
  *     new Object[]{entry.fileName(), entry.getBytes()});
  * </pre>
- * 
+ *
  * @author <a href="mailto:rmuller@xiam.nl">Ronald K. Muller</a>
  * @since infomas-asl 3.0.2
  */

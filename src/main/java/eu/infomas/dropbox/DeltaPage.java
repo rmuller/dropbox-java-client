@@ -1,4 +1,4 @@
-/* SUPPRESS CHECKSTYLE RegexpHeader
+/* RegexpHeader
  *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
@@ -28,7 +28,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static eu.infomas.dropbox.Utils.*;
+import static eu.infomas.dropbox.Utils.asBoolean;
+import static eu.infomas.dropbox.Utils.asString;
 
 /**
  * A page of {@link DeltaEntry}s, returned by {@link Dropbox#delta(java.lang.String)}.
@@ -50,7 +51,7 @@ public final class DeltaPage implements Serializable {
         reset = asBoolean(jsonMap, "reset");
         cursor = asString(jsonMap, "cursor");
         hasMore = asBoolean(jsonMap, "hasMore");
-        final List<List<Object>> list = (List<List<Object>>) jsonMap.get("entries");
+        final List<List<Object>> list = (List<List<Object>>)jsonMap.get("entries");
         entries = new ArrayList<DeltaEntry>(list.size());
         for (final List<Object> entryList : list) {
             entries.add(new DeltaEntry(entryList));
@@ -58,8 +59,8 @@ public final class DeltaPage implements Serializable {
     }
 
     /**
-     * A string that is used to keep track of your current state. 
-     * On the next call to {@link Dropbox#delta(java.lang.String) }, 
+     * A string that is used to keep track of your current state.
+     * On the next call to {@link Dropbox#delta(java.lang.String) },
      * pass in this value to pick up where you left off.
      */
     public String getCursor() {
@@ -68,7 +69,7 @@ public final class DeltaPage implements Serializable {
 
     /**
      * If <code>true</code>, then you should reset your local state to be an empty folder
-     * before processing the list of delta entries. This is only <code>true</code> in 
+     * before processing the list of delta entries. This is only <code>true</code> in
      * rare situations.
      */
     public boolean isReset() {
@@ -92,5 +93,5 @@ public final class DeltaPage implements Serializable {
     public boolean hasMore() {
         return hasMore;
     }
-    
+
 }

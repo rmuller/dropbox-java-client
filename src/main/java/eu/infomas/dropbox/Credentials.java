@@ -84,7 +84,7 @@ public final class Credentials implements Serializable {
             return true;
         }
         if (other instanceof Credentials) {
-            Credentials t = (Credentials) other;
+            final Credentials t = (Credentials) other;
             return t.key.equals(key) && t.secret.equals(secret);
         }
         return false;
