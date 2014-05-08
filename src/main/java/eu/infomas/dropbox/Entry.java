@@ -1,4 +1,4 @@
-/* RegexpHeader
+/* SUPPRESS CHECKSTYLE RegexpHeader
  *
  * Copyright (c) 2009-2011 Dropbox, Inc.
  *
